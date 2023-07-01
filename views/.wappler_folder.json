@@ -1,0 +1,18 @@
+{
+  "cou.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "demo.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "register1.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "Test.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  }
+}

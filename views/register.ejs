@@ -1,0 +1,57 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="register1" appconnect="local" dir="rtl" title="Registraton Page" components="{dmxValidator:{},dmxBrowser:{},dmxNotifications:{}}" -->
+<dmx-notifications id="notifies1" offset-x="75" offset-y="75"></dmx-notifications>
+<div is="dmx-browser" id="browser1"></div>
+<meta name="ac:route" content="/register1">
+<header>
+    <h1 class="text-center text-primary fw-lighter">הרשמה</h1>
+    <div class="container" dir="rtl">
+        <form id="register1" method="post" is="dmx-serverconnect-form" action="/api/register/register" dmx-on:success="register1.submit();register1.reset();notifies1.success('הצלחת');browser1.goto('/')" dmx-on:error="notifies1.warning()" dmx-on:unauthorized="notifies1.danger()">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-8 col-xl-6">
+                    <div class="row">
+                        <div class="col text-center">
+                            <h1></h1>
+                            <p class="text-h3 text-primary fw-lighter">למלאי פרטים כאן</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col mt-4">
+                            <input type="text" id="inp_first_name" name="first_name" class="form-control" placeholder="שם פרטי" required="" data-msg-required="חובה למלאי">
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col mt-4">
+                            <input type="text" id="inp_family_name" name="family_name" class="form-control" placeholder="שם משפחה" required="" data-msg-required="חובה למלאי">
+                        </div>
+                    </div>
+                    <div class="row align-items-center mt-4">
+                        <div class="col">
+                            <input type="email" id="inp_email" name="email" class="form-control" placeholder="אימייל" required="" data-msg-required="חובה למלאי" data-rule-email="" data-msg-email="בבקשה לתת כתובת אימייל שלך.">
+                        </div>
+                    </div>
+                    <div class="row align-items-center mt-4">
+                        <div class="col">
+                            <input type="password" id="inp_password" name="password" class="form-control" placeholder="סיסמה" required="" data-msg-required="חובה למלאי" data-rule-nowhitespace="" data-msg-nowhitespace="בלי מרחבים " minlength="8" data-msg-minlength="למלא לפחות שמונה מספרים או אותיות">
+                        </div>
+                        <div class="col">
+                            <input type="password" id="inp_password2" name="password2" class="form-control" placeholder="לאשר סיסמה" required="" data-msg-required="חובה למלאי" data-rule-equalto="password" data-msg-equalto="נא לרשום אותה סיסמה">
+                        </div>
+                    </div>
+                    <div class="row justify-content-start mt-4">
+                        <div class="col">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" required="" data-msg-required="חובה לאשר ">קראתי וקבלתי<a href="/COU"> תנאי השימוש </a>
+                                </label>
+                            </div>
+                            <button id="register1_submit" class="btn mt-4 btn-lg fw-lighter active shadow-lg" type="submit">ללחוץ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</header>

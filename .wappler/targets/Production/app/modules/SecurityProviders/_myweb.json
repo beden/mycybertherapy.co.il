@@ -1,0 +1,9 @@
+{
+  "name": "_myweb",
+  "module": "auth",
+  "action": "provider",
+  "options": {
+    "secret": "TXkZjra0JI7w4X3",
+    "provider": "Single"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "name": "remember"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "identity",
+      "module": "auth",
+      "action": "login",
+      "options": {
+        "provider": "_myweb",
+        "remember": 1,
+        "username": "{{$_POST.email}}",
+        "password": "{{$_POST.password.sha256('sdfgsdfgsdfgsdfg567567')}}"
+      },
+      "output": true,
+      "meta": []
+    }
+  }
+}

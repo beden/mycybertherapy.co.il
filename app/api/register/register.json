@@ -1,0 +1,198 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/register1.ejs",
+      "linkedForm": "serverconnectform1"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "first_name",
+        "name": "first_name"
+      },
+      {
+        "type": "text",
+        "fieldName": "family_name",
+        "name": "family_name"
+      },
+      {
+        "type": "text",
+        "fieldName": "email",
+        "options": {
+          "rules": {
+            "core:email": {}
+          }
+        },
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "fieldName": "password",
+        "name": "password"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "validate",
+        "module": "validator",
+        "action": "validate",
+        "options": {
+          "data": [
+            {
+              "name": "email",
+              "value": "{{$_POST.email}}",
+              "rules": {
+                "db:notexists": {
+                  "param": {
+                    "connection": "db",
+                    "table": "roles",
+                    "column": "id_roles"
+                  }
+                }
+              },
+              "fieldName": "email"
+            }
+          ]
+        }
+      },
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "users",
+                "column": "first_name",
+                "type": "text",
+                "value": "{{$_POST.first_name}}"
+              },
+              {
+                "table": "users",
+                "column": "family_name",
+                "type": "text",
+                "value": "{{$_POST.family_name}}"
+              },
+              {
+                "table": "users",
+                "column": "email",
+                "type": "text",
+                "value": "{{$_POST.email}}"
+              },
+              {
+                "table": "users",
+                "column": "password",
+                "type": "text",
+                "value": "{{$_POST.password.sha256('sdfgsdfgsdfgsdfg567567')}}"
+              },
+              {
+                "table": "users",
+                "column": "date_enrolled",
+                "type": "datetime",
+                "value": "{{NOW_UTC}}"
+              }
+            ],
+            "table": "users",
+            "returning": "id_users",
+            "query": "insert into `users` (`date_enrolled`, `email`, `family_name`, `first_name`, `password`) values (?, ?, ?, ?, ?) returning `id_users`",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.first_name}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.family_name}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.email}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.password.sha256('sdfgsdfgsdfgsdfg567567')}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{NOW_UTC}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": true
+      },
+      {
+        "name": "insert1",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "roles",
+                "column": "id_users",
+                "type": "text",
+                "value": "{{insert.identity}}"
+              },
+              {
+                "table": "roles",
+                "column": "role",
+                "type": "text",
+                "value": "P"
+              }
+            ],
+            "table": "roles",
+            "returning": "id_roles",
+            "query": "insert into `roles` (`id_users`, `role`) values (?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{insert.identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": true
+      }
+    ]
+  }
+}

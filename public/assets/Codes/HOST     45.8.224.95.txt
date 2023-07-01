@@ -1,0 +1,18 @@
+HOST     45.8.224.95
+PORT        3306         DB    cyberjew_MichaelB
+USER     cyberjew        PW nf$TH39cyber
+
+
+
+
+FTP SERVER   45.8.224.95
+REMOTE DIR   nodejsapp
+USER     cyberjew        PW nf$TH39cyber
+
+
+
+<html dir="rtl" lang="he"> 
+
+
+
+mib1@mtyray.co

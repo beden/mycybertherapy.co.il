@@ -1,0 +1,60 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+
+<head>
+    <base href="/">
+    <script src="/dmxAppConnect/dmxAppConnect.js"></script>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/bootstrap/5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
+    <script src="/dmxAppConnect/dmxBootstrap5Collapse/dmxBootstrap5Collapse.js" defer></script>
+    <script src="/dmxAppConnect/dmxBrowser/dmxBrowser.js" defer></script>
+    <link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
+    <script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
+    <link rel="stylesheet" href="/dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+    <script src="/dmxAppConnect/dmxNotifications/dmxNotifications.js" defer></script>
+    <script src="/dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer></script>
+</head>
+
+<body is="dmx-app" id="main" title="Online Psychiatry">
+    <dmx-serverconnect id="conn_who_am_i" url="/api/register/who_am_i"></dmx-serverconnect>
+    <div is="dmx-view" id="content">
+        <header class="gy-sm-0 gx-sm-0">
+            <div class="row justify-content-center gx-sm-0 gy-sm-0 g-0 shadow-none rounded-0 border-white">
+                <div class="col-3 me-4 gx-sm-0 gy-sm-0 text-end">
+                    <img src="/assets/images/themainlogo.jpg" class="img-fluid img-thumbnail">
+                </div>
+                <div class="col gx-sm-0 gy-sm-0 text-center rounded-0 shadow-none">
+                    <img src="/assets/images/MIB_reduced.png" class="img-fluid img-thumbnail gx-sm-0 gy-sm-0 flex-grow-1 align-self-end">
+                </div>
+                <div class="col-3 gx-sm-0 gy-sm-0 text-start">
+                    <img src="/assets/images/themainlogo1.jpg" class="img-fluid img-thumbnail ms-3 me-0 gx-sm-0 gy-sm-0">
+                </div>
+            </div>
+        </header>
+        <%- await include(content, locals); %>
+            <footer>
+                <div class="container">
+                    <div class="row justify-content-between align-items-center row-cols-sm-1 justify-content-sm-center g-0 align-items-sm-center" dir="rtl">
+                        <div class="col-3 align-self-center gx-sm-0 gy-sm-0">
+                            <p class="fw-lighter text-primary text-start"><a href="https://www.amazon.com/Book-David-Manifesto-Revolution-Healthcare/dp/1629671630" target="_blank">The Book Of David</a></p>
+                        </div>
+                        <div class="col gy-sm-0 gx-sm-0 me-3">
+                            <p class="text-center text-primary fw-lighter">ד"ר מיכאל בנימין&nbsp; &nbsp;2023</p>
+                        </div>
+                        <div class="col-3 gx-sm-0 gy-sm-0 align-self-sm-end ms-0">
+                            <i class="far fa-copyright fa-3x"></i>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+    </div>
+    <script src="/bootstrap/5/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

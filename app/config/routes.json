@@ -1,0 +1,25 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "page": "index",
+      "routeType": "page",
+      "layout": "main"
+    },
+    {
+      "path": "/cou",
+      "page": "cou",
+      "layout": "main"
+    },
+    {
+      "path": "/register1",
+      "page": "register1",
+      "layout": "main"
+    },
+    {
+      "path": "/Test",
+      "page": "Test",
+      "layout": "main"
+    }
+  ]
+}
