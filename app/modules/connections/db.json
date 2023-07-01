@@ -3,13 +3,9 @@
   "module": "dbconnector",
   "action": "connect",
   "options": {
-    "client": "mysql",
+    "client": "sqlite3",
     "connection": {
-      "host": "45.8.224.95",
-      "port": 3306,
-      "user": "cyberjew",
-      "password": "nf$TH39cyber",
-      "database": "cyberjew_michaelB"
+      "filename": "/db_dev.slqlite3"
     }
   }
 }
