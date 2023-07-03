@@ -14,5 +14,9 @@
   "Test.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "test.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }
