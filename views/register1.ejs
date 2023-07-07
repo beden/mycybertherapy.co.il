@@ -9,6 +9,9 @@
             <div class="col"></div>
             <div class="col">
                 <form is="dmx-serverconnect-form" id="serverconnectform1" method="post" action="/api/register/register" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="serverconnectform1.reset();browser1.goto('/Test')">
+                    <div class="form-group mb-3">
+                        <input type="hidden" class="form-control" id="product_id" name="product_id" aria-describedby="input2_help" placeholder="Enter some text">
+                    </div>
                     <div class="form-group mb-3 row">
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="inp_first_name" name="first_name" aria-describedby="inp_first_name_help" placeholder="שם פרטי" required="" data-msg-required="חובה">

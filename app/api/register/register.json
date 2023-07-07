@@ -8,11 +8,27 @@
       {
         "type": "text",
         "fieldName": "first_name",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "חובה"
+            }
+          }
+        },
         "name": "first_name"
       },
       {
         "type": "text",
         "fieldName": "family_name",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "חובה"
+            }
+          }
+        },
         "name": "family_name"
       },
       {
@@ -20,7 +36,13 @@
         "fieldName": "email",
         "options": {
           "rules": {
-            "core:email": {}
+            "core:required": {
+              "param": "",
+              "message": "חובה"
+            },
+            "core:email": {
+              "param": ""
+            }
           }
         },
         "name": "email"
@@ -28,7 +50,24 @@
       {
         "type": "text",
         "fieldName": "password",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "חובה"
+            },
+            "core:minlength": {
+              "param": "8",
+              "message": "לפחות שמונה אותיות או מספרים"
+            }
+          }
+        },
         "name": "password"
+      },
+      {
+        "type": "text",
+        "fieldName": "product_id",
+        "name": "product_id"
       }
     ]
   },
@@ -56,6 +95,26 @@
             }
           ]
         }
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_POST.product_id.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "honey_pot",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 401,
+                "data": "Unauthorised"
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
       },
       {
         "name": "insert",
