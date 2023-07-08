@@ -11,8 +11,8 @@
             <div class="col">
                 <form is="dmx-serverconnect-form" id="serverconnectform1" method="post" action="/api/register/register" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="serverconnectform1.reset();browser1.goto('/Test')">
                     <div class="form-group mb-3">
-                        <input type="hidden" class="form-control" id="product_id" name="product_id" aria-describedby="input2_help" placeholder="Enter some text">
-                        <input id="product_name" name="product_name" type="hidden" class="form-control" dmx-bind:value="conn_regcode.data.regcode">
+                        <input class="d-none" id="product_id" name="product_id" aria-describedby="input2_help" placeholder="Enter some text">
+                        <input id="product_name" name="product_name" class="d-none" dmx-bind:value="conn_regcode.data.regcode">
                     </div>
                     <div class="form-group mb-3 row">
                         <div class="col-sm-10">
