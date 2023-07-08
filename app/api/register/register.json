@@ -68,6 +68,17 @@
         "type": "text",
         "fieldName": "product_id",
         "name": "product_id"
+      },
+      {
+        "type": "text",
+        "fieldName": "product_name",
+        "name": "product_name"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "text",
+        "name": "regcode"
       }
     ]
   },
@@ -95,6 +106,26 @@
             }
           ]
         }
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_POST.product_name!=$_SESSION.regcode}}",
+          "then": {
+            "steps": {
+              "name": "honey_pot_2",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 401,
+                "data": "Unauthorised"
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
       },
       {
         "name": "",
