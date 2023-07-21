@@ -18,5 +18,17 @@
   "test.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "Basic_Mental_Health.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "basic_mental_health1.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "bnh.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

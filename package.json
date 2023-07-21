@@ -38,7 +38,7 @@
     "socket.io": "^4.4.0",
     "unzipper": "^0.10.11",
     "uuid": "^8.3.2",
-    "sqlite3": "^5.0.2"
+    "mysql": "^2.18.1"
   },
   "nodemonConfig": {
     "watch": [

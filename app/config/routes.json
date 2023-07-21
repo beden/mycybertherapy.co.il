@@ -20,6 +20,11 @@
       "path": "/test",
       "page": "test",
       "layout": "main"
+    },
+    {
+      "path": "/bnh",
+      "page": "bnh",
+      "layout": "main"
     }
   ]
 }
