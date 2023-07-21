@@ -30,5 +30,9 @@
   "bnh.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "DIYCBT.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

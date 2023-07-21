@@ -25,6 +25,11 @@
       "path": "/bnh",
       "page": "bnh",
       "layout": "main"
+    },
+    {
+      "path": "/DIYCBT",
+      "page": "DIYCBT",
+      "layout": "main"
     }
   ]
 }
