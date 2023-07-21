@@ -1,5 +1,5 @@
 {
-  "projectName": "aa2706",
+  "projectName": "mycbertherapy_coil",
   "styleFile": "/css/style.css",
   "assetsFolder": "/assets",
   "designFramework": "bootstrap5",
@@ -32,7 +32,7 @@
       "access": "local",
       "targetType": "wappler",
       "databaseConnectionType": "sqlite",
-      "localFolder": "file:///C:/Users/Michael/OneDrive/aa2706"
+      "localFolder": ""
     },
     {
       "name": "Production",

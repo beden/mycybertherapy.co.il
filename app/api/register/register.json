@@ -189,37 +189,32 @@
             ],
             "table": "users",
             "returning": "id_users",
-            "query": "insert into `users` (`date_enrolled`, `email`, `family_name`, `first_name`, `password`) values (?, ?, ?, ?, ?) returning `id_users`",
+            "query": "INSERT INTO users\n(first_name, family_name, email, password, date_enrolled) VALUES (:P1 /* {{$_POST.first_name}} */, :P2 /* {{$_POST.family_name}} */, :P3 /* {{$_POST.email}} */, :P4 /* {{$_POST.password.sha256('sdfgsdfgsdfgsdfg567567')}} */, :P5 /* {{NOW_UTC}} */)",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{$_POST.first_name}}",
-                "test": ""
+                "value": "{{$_POST.first_name}}"
               },
               {
                 "name": ":P2",
                 "type": "expression",
-                "value": "{{$_POST.family_name}}",
-                "test": ""
+                "value": "{{$_POST.family_name}}"
               },
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.email}}",
-                "test": ""
+                "value": "{{$_POST.email}}"
               },
               {
                 "name": ":P4",
                 "type": "expression",
-                "value": "{{$_POST.password.sha256('sdfgsdfgsdfgsdfg567567')}}",
-                "test": ""
+                "value": "{{$_POST.password.sha256('sdfgsdfgsdfgsdfg567567')}}"
               },
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{NOW_UTC}}",
-                "test": ""
+                "value": "{{NOW_UTC}}"
               }
             ]
           }

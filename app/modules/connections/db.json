@@ -6,6 +6,10 @@
     "client": "sqlite3",
     "connection": {
       "filename": "/db_dev.slqlite3"
-    }
-  }
+    },
+    "meta": {}
+  },
+  "actionFilePath": "file:///C:/mycybertherapy_hebrew/app/modules/connections/db.json",
+  "serverType": "node",
+  "fileName": "db.json"
 }
