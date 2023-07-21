@@ -30,6 +30,11 @@
       "path": "/DIYCBT",
       "page": "DIYCBT",
       "layout": "main"
+    },
+    {
+      "path": "/mycbtexplanation",
+      "page": "mycbtexplanation",
+      "layout": "main"
     }
   ]
 }

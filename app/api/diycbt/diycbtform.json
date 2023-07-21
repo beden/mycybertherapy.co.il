@@ -1,3 +1,46 @@
 {
+  "meta": {
+    "options": {
+      "linkedFile": "/views/DIYCBT.ejs",
+      "linkedForm": "form1"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "ci",
+        "name": "ci"
+      },
+      {
+        "type": "text",
+        "fieldName": "cbt",
+        "name": "cbt"
+      },
+      {
+        "type": "text",
+        "fieldName": "relations",
+        "name": "relations"
+      },
+      {
+        "type": "text",
+        "fieldName": "attention",
+        "name": "attention"
+      },
+      {
+        "type": "text",
+        "fieldName": "feelings",
+        "name": "feelings"
+      },
+      {
+        "type": "text",
+        "fieldName": "existential",
+        "name": "existential"
+      },
+      {
+        "type": "text",
+        "fieldName": "summation",
+        "name": "summation"
+      }
+    ]
+  },
   "exec": {}
 }

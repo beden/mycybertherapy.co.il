@@ -40,8 +40,7 @@
             "operator": "equal",
             "type": "expression",
             "name": ":P1",
-            "value": "{{identity}}",
-            "test": ""
+            "value": "{{identity}}"
           }
         ],
         "table": {
@@ -76,7 +75,7 @@
           "conditional": null,
           "valid": true
         },
-        "query": "select `first_name`, `family_name`, `email`, `date_enrolled` from `users` where `users`.`id_users` = ?"
+        "query": "SELECT first_name, family_name, email, date_enrolled\nFROM users\nWHERE id_users = :P1 /* {{identity}} */"
       }
     },
     "output": true,

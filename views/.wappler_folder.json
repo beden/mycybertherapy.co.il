@@ -34,5 +34,9 @@
   "DIYCBT.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "mycbtexplanation.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }
