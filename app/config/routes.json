@@ -1,6 +1,26 @@
 {
   "routes": [
     {
+      "path": "/admin/",
+      "page": "index"
+    },
+    {
+      "path": "/admin/index",
+      "page": "admin/index",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/userlist",
+      "page": "admin/userlist",
+      "layout": "admin"
+    },
+    {
+      "path": "/diycbt",
+      "name": "diycbt",
+      "page": "diycbt",
+      "layout": "main"
+    },
+    {
       "path": "/login",
       "layout": "main",
       "page": "login",
@@ -33,11 +53,6 @@
       "layout": "main"
     },
     {
-      "path": "/DIYCBT",
-      "page": "DIYCBT",
-      "layout": "main"
-    },
-    {
       "path": "/mycbtexplanation",
       "page": "mycbtexplanation",
       "layout": "main"
@@ -47,5 +62,10 @@
       "page": "logout",
       "layout": "main"
     }
-  ]
+  ],
+  "layouts": {
+    "admin": {
+      "exec": "/api/admin/isadmin"
+    }
+  }
 }

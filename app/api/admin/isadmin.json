@@ -1,0 +1,13 @@
+{
+  "name": "",
+  "module": "auth",
+  "action": "restrict",
+  "options": {
+    "provider": "_myweb",
+    "permissions": [
+      "Administrator"
+    ],
+    "loginUrl": "/login",
+    "forbiddenUrl": "/login"
+  }
+}

@@ -24,12 +24,12 @@
           }
         ]
       },
-      "Administrator": {
+      "Admin": {
         "table": "roles",
         "identity": "id_users",
         "conditions": [
           {
-            "column": "id_roles",
+            "column": "role",
             "operator": "=",
             "value": "A"
           }
