@@ -1,0 +1,10 @@
+{
+  "index.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "userlist.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  }
+}

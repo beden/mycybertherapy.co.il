@@ -32,7 +32,7 @@
       "access": "local",
       "targetType": "wappler",
       "databaseConnectionType": "sqlite",
-      "localFolder": ""
+      "sqliteDbFile": "/db/db_dev.sqlite3"
     },
     {
       "name": "Production",

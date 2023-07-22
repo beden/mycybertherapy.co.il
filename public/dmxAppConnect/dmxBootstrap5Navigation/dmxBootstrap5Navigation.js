@@ -1,10 +1,23 @@
-// Bootstrap 5 Navigation
-document.addEventListener('DOMContentLoaded', function(event) {
+(function() {
 
-  window.addEventListener('popstate', _update);
-  window.addEventListener('pushstate', _update);
+  // Call init when DOM is ready
+  if (document.readyState === 'loading') { // Loading hasn't finished yet
+    document.addEventListener('DOMContentLoaded', _init, { once: true });
+  } else { // DOMContentLoaded has already fired
+    _init();
+  }
 
-  _update();
+  function _init() {
+    // Listen to url changes
+    window.addEventListener('popstate', _update);
+    window.addEventListener('pushstate', _update);
+
+    // Listen to DOM changes and call update when nodes are added
+    new MutationObserver(_update).observe(document.body, { subtree: true, childList: true });
+
+    // Initial update
+    _update();
+  }
 
   function _update() {
   	var url = window.location.href;
@@ -23,4 +36,5 @@ document.addEventListener('DOMContentLoaded', function(event) {
       }
   	});
   }
-});
+
+})()

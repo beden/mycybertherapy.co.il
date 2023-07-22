@@ -38,5 +38,9 @@
   "mycbtexplanation.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "logout.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

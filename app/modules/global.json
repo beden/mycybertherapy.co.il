@@ -1,3 +1,22 @@
 {
-  "exec": {}
+  "meta": {
+    "$_SESSION": [
+      {
+        "type": "text",
+        "name": "regcode"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "current_user_identity",
+      "module": "auth",
+      "action": "identify",
+      "options": {
+        "provider": "myweb"
+      },
+      "output": true,
+      "meta": []
+    }
+  }
 }

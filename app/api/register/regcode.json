@@ -1,11 +1,33 @@
 {
-  "name": "regcode",
-  "module": "core",
-  "action": "setvalue",
-  "options": {
-    "value": "{{UUID}}"
+  "meta": {
+    "$_SESSION": [
+      {
+        "type": "text",
+        "name": "regcode"
+      }
+    ]
   },
-  "meta": [],
-  "outputType": "text",
-  "output": true
+  "exec": {
+    "steps": [
+      {
+        "name": "regcode",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{UUID}}"
+        }
+      },
+      {
+        "name": "regcode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SESSION.regcode}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      }
+    ]
+  }
 }

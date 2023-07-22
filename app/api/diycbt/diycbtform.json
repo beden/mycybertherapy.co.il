@@ -42,5 +42,130 @@
       }
     ]
   },
-  "exec": {}
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "diycbt",
+              "column": "ci",
+              "type": "text",
+              "value": "{{$_POST.ci}}"
+            },
+            {
+              "table": "diycbt",
+              "column": "cbt",
+              "type": "text",
+              "value": "{{$_POST.cbt}}"
+            },
+            {
+              "table": "diycbt",
+              "column": "relations",
+              "type": "text",
+              "value": "{{$_POST.relations}}"
+            },
+            {
+              "table": "diycbt",
+              "column": "attention",
+              "type": "text",
+              "value": "{{$_POST.attention}}"
+            },
+            {
+              "table": "diycbt",
+              "column": "feelings",
+              "type": "text",
+              "value": "{{$_POST.feelings}}"
+            },
+            {
+              "table": "diycbt",
+              "column": "existential",
+              "type": "text",
+              "value": "{{$_POST.existential}}"
+            },
+            {
+              "table": "diycbt",
+              "column": "summation",
+              "type": "text",
+              "value": "{{$_POST.summation}}"
+            },
+            {
+              "table": "diycbt",
+              "column": "user_id",
+              "type": "number",
+              "value": "{{current_user_identity}}"
+            }
+          ],
+          "table": "diycbt",
+          "returning": "id",
+          "query": "insert into `diycbt` (`attention`, `cbt`, `ci`, `existential`, `feelings`, `relations`, `summation`, `user_id`) values (?, ?, ?, ?, ?, ?, ?, ?)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.ci}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.cbt}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.relations}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.attention}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.feelings}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.existential}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.summation}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{current_user_identity}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
 }

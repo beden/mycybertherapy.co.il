@@ -97,8 +97,8 @@
                 "db:notexists": {
                   "param": {
                     "connection": "db",
-                    "table": "roles",
-                    "column": "id_roles"
+                    "table": "users",
+                    "column": "email"
                   }
                 }
               },
@@ -120,12 +120,13 @@
               "action": "response",
               "options": {
                 "status": 401,
-                "data": "Unauthorised"
+                "data": "{{'Unauthorised regcode '+$_SESSION.regcode+' NE '+$_POST.product_name}}"
               }
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       },
       {
         "name": "",
@@ -140,7 +141,7 @@
               "action": "response",
               "options": {
                 "status": 401,
-                "data": "Unauthorised"
+                "data": "Unauthorised id"
               }
             }
           }
@@ -277,6 +278,19 @@
           }
         ],
         "output": true
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "login",
+        "options": {
+          "provider": "myweb",
+          "username": "{{$_POST.email}}",
+          "remember": 1,
+          "password": "{{$_POST.password.sha256('sdfgsdfgsdfgsdfg567567')}}"
+        },
+        "output": true,
+        "meta": []
       }
     ]
   }

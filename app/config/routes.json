@@ -1,6 +1,12 @@
 {
   "routes": [
     {
+      "path": "/login",
+      "layout": "main",
+      "page": "login",
+      "name": "login"
+    },
+    {
       "path": "/",
       "page": "index",
       "routeType": "page",
@@ -34,6 +40,11 @@
     {
       "path": "/mycbtexplanation",
       "page": "mycbtexplanation",
+      "layout": "main"
+    },
+    {
+      "path": "/logout",
+      "page": "logout",
       "layout": "main"
     }
   ]

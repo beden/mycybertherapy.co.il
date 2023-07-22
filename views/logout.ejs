@@ -1,0 +1,15 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="logout" appConnect="local" -->
+<meta name="ac:route" content="/logout">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col text-center">
+            <h1>Are You Sure You Wish To Logout</h1>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col text-center mt-5">
+            <form id="form1" is="dmx-serverconnect-form" method="post" action="/api/register/logout" dmx-on:success="browser_global.goto('/')"><button id="btn1" class="btn fw-bold btn-outline-secondary" type="submit">Click here to Logout</button></form>
+
+        </div>
+    </div>
+</div>

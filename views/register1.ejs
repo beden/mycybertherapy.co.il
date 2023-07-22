@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col"></div>
             <div class="col">
-                <form is="dmx-serverconnect-form" id="serverconnectform1" method="post" action="/api/register/register" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="serverconnectform1.reset();browser1.goto('/Test')">
+                <form is="dmx-serverconnect-form" id="serverconnectform1" method="post" action="/api/register/register" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-on:success="serverconnectform1.reset();browser1.goto('/')">
                     <div class="form-group mb-3">
                         <input class="d-none" id="product_id" name="product_id" aria-describedby="input2_help" placeholder="Enter some text">
                         <input id="product_name" name="product_name" class="d-none" dmx-bind:value="conn_regcode.data.regcode">
@@ -40,17 +40,19 @@
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
-                        <div class="col-sm-2 d-flex me-lg-4 pe-lg-3 ps-xl-3 pe-xl-5 justify-content-xxl-start flex-xxl-row ms-xxl-0">
+
+                        <div class="col">
 
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="input1" name="input1">
                                 <label class="form-check-label col-xxl offset-xxl-0 col-form-label-sm" for="input1" dir="rtl"><a href="/cou" target="_blank">נא לאשר קריאת וקבלת תנאי שירות</a></label>
                             </div>&nbsp;
                         </div>
+                        <div class="col-2 d-none d-sm-block"></div>
                     </div>
                     <div class="form-group mb-3 row">
                         <div class="col-sm-2">&nbsp;</div>
-                        <div class="col-sm-2">&nbsp;<button type="submit" class="btn btn-light text-center fw-lighter text-primary btn-lg" dmx-bind:disabled="state.executing">ללחוץ להירשם<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
+                        <div class="col">&nbsp;<button type="submit" class="btn text-center fw-lighter text-primary btn-lg btn-outline-secondary" dmx-bind:disabled="state.executing">ללחוץ להירשם<span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button></div>
                         <div class="col-sm-10">
 
                         </div>

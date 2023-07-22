@@ -1,0 +1,33 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="userlist" appConnect="local" components="{dmxBootstrap5TableGenerator:{}}" -->
+<meta name="ac:route" content="/admin/userlist">
+<dmx-serverconnect id="conn_users" url="/api/admin/userlist"></dmx-serverconnect>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Id users</th>
+                            <th>First name</th>
+                            <th>Family name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Date enrolled</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="conn_users.data.query" id="tableRepeat1">
+                        <tr>
+                            <td dmx-text="id_users"></td>
+                            <td dmx-text="first_name"></td>
+                            <td dmx-text="family_name"></td>
+                            <td dmx-text="email"></td>
+                            <td dmx-text="password"></td>
+                            <td dmx-text="date_enrolled"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

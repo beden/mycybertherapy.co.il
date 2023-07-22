@@ -2,7 +2,7 @@
   "direct": true,
   "type": "sqlite3",
   "connection": {
-    "filename": "/db_dev.slqlite3"
+    "filename": "/db/db_dev.sqlite3"
   },
   "schema": {
     "tables": {
