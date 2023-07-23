@@ -54,5 +54,6 @@
   ],
   "activeTarget": "Production",
   "projectType": "web",
-  "extensions": []
+  "extensions": [],
+  "activeGitRemote": "origin"
 }
