@@ -1,0 +1,47 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="userdata" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxBootstrap5Tooltips:{},dmxBootbox5:{},dmxFormatter:{}}" -->
+<dmx-serverconnect id="conn_user" url="/api/admin/get_user_by_id" dmx-param:user_id="query.user_id"></dmx-serverconnect>
+<dmx-serverconnect id="conn_diycbt" url="/api/diycbt/get_cbt_by_id" dmx-param:user_id="query.user_id"></dmx-serverconnect>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>{{conn_user.data.query.family_name+' '+conn_user.data.query.first_name+' '+conn_user.data.query.email}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Ci</th>
+                            <th>Cbt</th>
+                            <th>Relations</th>
+                            <th>Attention</th>
+                            <th>Feelings</th>
+                            <th>Existential</th>
+                            <th>Summation</th>
+                            <th scope="row">Header</th>
+                            <th scope="row">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="conn_diycbt.data.query" id="tableRepeat1">
+                        <tr>
+                            <td dmx-text="ci"></td>
+                            <td dmx-text="cbt"></td>
+                            <td dmx-text="relations"></td>
+                            <td dmx-text="attention"></td>
+                            <td dmx-text="feelings"></td>
+                            <td dmx-text="existential"></td>
+                            <td dmx-text="summation"></td>
+                            <td dmx-text="submission_date.formatDate('dd/MM/yyyy')"></td>
+                            <td>
+                                <button id="btn1" class="btn btn-outline-danger w-100" dmx-on:click="run([{comment:{msg:'Delete diycbt entry'}},{'bootbox.confirm':{message:'Delete Entry',title:' Delete',buttons:{confirm:{label:'Delete Entry',className:'btn-danger'},cancel:{label:'Cancel',className:'btn-secondary'}},then:{steps:[{comment:{msg:'deklete'}},{serverConnect:{url:'/api/diycbt/delete_diycbt_by_id',site:'mycybertherapy.co.il',params:{id:`id`},name:'sc',outputType:'object'}},{run:{action:`browser_global.notifies_global.info(\'Deleted\')`,outputType:'text'}},{run:{action:`conn_diycbt.load({})`,outputType:'text'}}]},name:'del'}}])">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<meta name="ac:route" content="/admin/userdata/:user_id">

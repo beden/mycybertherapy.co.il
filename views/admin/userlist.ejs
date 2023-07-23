@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="userlist" appConnect="local" components="{dmxBootstrap5TableGenerator:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="userlist" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxBootbox5:{}}" -->
 <meta name="ac:route" content="/admin/userlist">
 <dmx-serverconnect id="conn_users" url="/api/admin/userlist"></dmx-serverconnect>
 <div class="container">
@@ -12,8 +12,9 @@
                             <th>First name</th>
                             <th>Family name</th>
                             <th>Email</th>
-                            <th>Password</th>
                             <th>Date enrolled</th>
+                            <th scope="row">&nbsp;</th>
+                            <th scope="row">&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="conn_users.data.query" id="tableRepeat1">
@@ -22,8 +23,13 @@
                             <td dmx-text="first_name"></td>
                             <td dmx-text="family_name"></td>
                             <td dmx-text="email"></td>
-                            <td dmx-text="password"></td>
                             <td dmx-text="date_enrolled"></td>
+                            <td>
+                                <a href="#" class="btn btn-outline-primary" dmx-bind:href="'/admin/userdata/'+id_users">User Data</a>
+                            </td>
+                            <td>
+                                <button id="btn2" class="btn btn-outline-danger" dmx-on:click="run([{comment:{msg:'start'}},{'bootbox.confirm':{message:'Delete ALL Data for this user',title:' Delete User',buttons:{confirm:{label:'Delete',className:'btn-danger'},cancel:{label:'Cancel',className:'btn-secondary'}},then:{steps:[{comment:{msg:'delete all'}},{serverConnect:{url:'/api/admin/delete_user_by_id',site:'mycybertherapy.co.il',params:{user_id:`id_users`},name:'sc',outputType:'object'}},{run:{action:`browser_global.notifies_global.info(\'Deleted\')`,outputType:'text'}},{run:{action:`conn_users.load({})`,outputType:'text'}}]},name:'deletedata'}}])">Delete</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

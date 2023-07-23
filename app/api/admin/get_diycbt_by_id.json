@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "_myweb",
+          "permissions": [
+            "Admin"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/login"
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "diycbt",
+                "column": "*"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.user_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "diycbt"
+            },
+            "primary": "id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "diycbt.user_id",
+                  "field": "diycbt.user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.user_id}}",
+                  "data": {
+                    "table": "diycbt",
+                    "column": "user_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "user_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select * from `diycbt` where `diycbt`.`user_id` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id"
+          },
+          {
+            "type": "text",
+            "name": "ci"
+          },
+          {
+            "type": "text",
+            "name": "cbt"
+          },
+          {
+            "type": "text",
+            "name": "relations"
+          },
+          {
+            "type": "text",
+            "name": "attention"
+          },
+          {
+            "type": "text",
+            "name": "feelings"
+          },
+          {
+            "type": "text",
+            "name": "existential"
+          },
+          {
+            "type": "text",
+            "name": "summation"
+          },
+          {
+            "type": "number",
+            "name": "user_id"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

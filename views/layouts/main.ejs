@@ -58,7 +58,7 @@
                                     <a class="nav-item nav-link" href="/">בית</a>
                                     <a class="nav-item nav-link" href="/bnh">בראיות הנפש</a>
                                     <a class="nav-item nav-link" href="/mycbtexplanation">הסבר לטיפול&nbsp;</a>
-                                    <a class="nav-item nav-link" href="/diycbt">דף טיפול&nbsp;</a>
+                                    <a class="nav-item nav-link" href="/diycbt" dmx-show="conn_who_am_i.data.current_user_identity&gt;=1">דף טיפול&nbsp;</a>
                                     <a class="nav-item nav-link" href="#">תוצאות</a>
                                     <a class="nav-item nav-link" href="/cou">תנאי שימוש</a>
                                     <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbar1_dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" wappler-command="editContent">
@@ -74,6 +74,7 @@
                                     <a class="nav-item nav-link" href="/login" dmx-show="conn_who_am_i.data.current_user_identity&lt;1">Login</a>
                                     <a class="nav-item nav-link" href="/logout" dmx-show="conn_who_am_i.data.current_user_identity&gt;=1">Logout</a>
                                     <a class="nav-item nav-link" href="/register1" dmx-show="conn_who_am_i.data.current_user_identity&lt;1">Register</a>
+                                    <a class="nav-item nav-link" href="/admin/" dmx-show="conn_who_am_i.data.identity&gt;0">Admin</a>
                                 </div>
                             </div>
                         </div>

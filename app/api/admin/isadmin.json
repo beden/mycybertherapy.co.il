@@ -5,7 +5,7 @@
   "options": {
     "provider": "_myweb",
     "permissions": [
-      "Administrator"
+      "Admin"
     ],
     "loginUrl": "/login",
     "forbiddenUrl": "/login"

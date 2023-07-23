@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "user_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "_myweb",
+          "permissions": [
+            "Admin"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/login"
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "users",
+                "column": "first_name"
+              },
+              {
+                "table": "users",
+                "column": "family_name"
+              },
+              {
+                "table": "users",
+                "column": "email"
+              },
+              {
+                "table": "users",
+                "column": "date_enrolled"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.user_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "users"
+            },
+            "primary": "id_users",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "users.id_users",
+                  "field": "users.id_users",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.user_id}}",
+                  "data": {
+                    "table": "users",
+                    "column": "id_users",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "id_users"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "users"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `first_name`, `family_name`, `email`, `date_enrolled` from `users` where `users`.`id_users` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "first_name"
+          },
+          {
+            "type": "text",
+            "name": "family_name"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "datetime",
+            "name": "date_enrolled"
+          }
+        ],
+        "outputType": "object"
+      }
+    ]
+  }
+}

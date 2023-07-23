@@ -284,7 +284,7 @@
         "module": "auth",
         "action": "login",
         "options": {
-          "provider": "myweb",
+          "provider": "_myweb",
           "username": "{{$_POST.email}}",
           "remember": 1,
           "password": "{{$_POST.password.sha256('sdfgsdfgsdfgsdfg567567')}}"

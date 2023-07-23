@@ -99,11 +99,17 @@
               "column": "user_id",
               "type": "number",
               "value": "{{current_user_identity}}"
+            },
+            {
+              "table": "diycbt",
+              "column": "submission_date",
+              "type": "datetime",
+              "value": "{{NOW_UTC}}"
             }
           ],
           "table": "diycbt",
           "returning": "id",
-          "query": "insert into `diycbt` (`attention`, `cbt`, `ci`, `existential`, `feelings`, `relations`, `summation`, `user_id`) values (?, ?, ?, ?, ?, ?, ?, ?)",
+          "query": "insert into `diycbt` (`attention`, `cbt`, `ci`, `existential`, `feelings`, `relations`, `submission_date`, `summation`, `user_id`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
           "params": [
             {
               "name": ":P1",
@@ -151,6 +157,12 @@
               "name": ":P8",
               "type": "expression",
               "value": "{{current_user_identity}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{NOW_UTC}}",
               "test": ""
             }
           ]

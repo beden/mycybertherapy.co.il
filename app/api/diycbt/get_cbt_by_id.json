@@ -110,6 +110,10 @@
         {
           "type": "number",
           "name": "user_id"
+        },
+        {
+          "type": "datetime",
+          "name": "submission_date"
         }
       ],
       "outputType": "array"

@@ -185,6 +185,14 @@
               "primary": false,
               "nullable": true
             }
+          },
+          "submission_date": {
+            "db": {
+              "type": "datetime",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "nullable": true
+            }
           }
         }
       }

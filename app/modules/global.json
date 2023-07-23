@@ -8,15 +8,105 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "current_user_identity",
-      "module": "auth",
-      "action": "identify",
-      "options": {
-        "provider": "myweb"
+    "steps": [
+      {
+        "name": "current_user_identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "myweb"
+        },
+        "output": true,
+        "meta": []
       },
-      "output": true,
-      "meta": []
-    }
+      {
+        "name": "query_is_admin",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "roles",
+                "column": "id_roles"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{current_user_identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "roles"
+            },
+            "primary": "id_roles",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "roles.id_users",
+                  "field": "roles.id_users",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{current_user_identity}}",
+                  "data": {
+                    "table": "roles",
+                    "column": "id_users",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": 255,
+                      "primary": false,
+                      "nullable": true,
+                      "name": "id_users"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "roles.role",
+                  "field": "roles.role",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "A",
+                  "data": {
+                    "table": "roles",
+                    "column": "role",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "default": "'function i(t){t!==x&&r(this,t),this._bitField=0,this._fulfillmentHandler0=void 0,this._rejectionHandler0=void 0,this._promise0=void 0,this._receiver0=void 0,this._resolveFromExecutor(t),this._promiseCreated(),this._fireEvent(\"promiseCreated\",this)}'",
+                      "maxLength": 255,
+                      "primary": false,
+                      "nullable": true,
+                      "name": "role"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `id_roles` from `roles` where `roles`.`id_users` = ? and `roles`.`role` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "id_roles"
+          }
+        ],
+        "outputType": "object"
+      }
+    ]
   }
 }

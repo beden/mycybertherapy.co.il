@@ -3,6 +3,6 @@
   "module": "auth",
   "action": "logout",
   "options": {
-    "provider": "myweb"
+    "provider": "_myweb"
   }
 }

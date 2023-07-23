@@ -92,24 +92,6 @@
               "nullable": true,
               "default": "knex.fn.now()"
             }
-          },
-          "product_id": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "product_name": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
           }
         },
         "db": {}
@@ -183,6 +165,15 @@
             "db": {
               "type": "string",
               "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "submission_date": {
+            "db": {
+              "type": "datetime",
+              "default": "knex.fn.now()",
               "primary": false,
               "unique": false,
               "nullable": true

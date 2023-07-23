@@ -6,5 +6,9 @@
   "userlist.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "userdata.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }
