@@ -14,7 +14,7 @@
         "module": "auth",
         "action": "identify",
         "options": {
-          "provider": "myweb"
+          "provider": "_myweb"
         },
         "output": true,
         "meta": []
