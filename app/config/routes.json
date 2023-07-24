@@ -67,6 +67,16 @@
       "path": "/admin/userdata/:user_id",
       "page": "admin/userdata",
       "layout": "admin"
+    },
+    {
+      "path": "/admin/meetings",
+      "page": "admin/meetings",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/meetingdiary",
+      "page": "admin/meetingdiary",
+      "layout": "admin"
     }
   ],
   "layouts": {

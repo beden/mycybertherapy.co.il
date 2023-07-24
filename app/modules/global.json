@@ -31,6 +31,10 @@
               {
                 "table": "roles",
                 "column": "id_roles"
+              },
+              {
+                "table": "roles",
+                "column": "id_users"
               }
             ],
             "params": [
@@ -64,6 +68,7 @@
                       "type": "string",
                       "maxLength": 255,
                       "primary": false,
+                      "unique": false,
                       "nullable": true,
                       "name": "id_users"
                     }
@@ -85,6 +90,7 @@
                       "default": "'function i(t){t!==x&&r(this,t),this._bitField=0,this._fulfillmentHandler0=void 0,this._rejectionHandler0=void 0,this._promise0=void 0,this._receiver0=void 0,this._resolveFromExecutor(t),this._promiseCreated(),this._fireEvent(\"promiseCreated\",this)}'",
                       "maxLength": 255,
                       "primary": false,
+                      "unique": false,
                       "nullable": true,
                       "name": "role"
                     }
@@ -95,7 +101,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "select `id_roles` from `roles` where `roles`.`id_users` = ? and `roles`.`role` = ?"
+            "query": "select `id_roles`, `id_users` from `roles` where `roles`.`id_users` = ? and `roles`.`role` = ?"
           }
         },
         "output": true,
@@ -103,6 +109,10 @@
           {
             "type": "number",
             "name": "id_roles"
+          },
+          {
+            "type": "text",
+            "name": "id_users"
           }
         ],
         "outputType": "object"

@@ -195,6 +195,103 @@
             }
           }
         }
+      },
+      "conference": {
+        "db": {
+          "engine": "InnoDB",
+          "schema": "cyberjew_MichaelB",
+          "collation": "utf8mb3_general_ci",
+          "system_versioned": false
+        },
+        "columns": {
+          "conference_id": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "meeting_id": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "meetingwhen": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "sub": {
+          "conference_participants": "conference_id"
+        }
+      },
+      "conference_participants": {
+        "db": {
+          "engine": "InnoDB",
+          "schema": "cyberjew_MichaelB",
+          "collation": "utf8mb3_general_ci",
+          "system_versioned": false
+        },
+        "columns": {
+          "p_id": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "conference_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "conference_id",
+              "inTable": "conference",
+              "referenceType": "integer",
+              "onUpdate": "CASCADE",
+              "onDelete": "CASCADE"
+            }
+          },
+          "participant_id": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "user_id": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "role": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "parent": "conference"
       }
     },
     "views": {},

@@ -6,7 +6,6 @@
     "secret": "TXkZjra0JI7w4X3",
     "provider": "Database",
     "connection": "db",
-    "passwordVerify": true,
     "users": {
       "table": "users",
       "identity": "id_users",
@@ -22,6 +21,17 @@
             "column": "role",
             "operator": "=",
             "value": "P"
+          }
+        ]
+      },
+      "Admin": {
+        "table": "roles",
+        "identity": "id_users",
+        "conditions": [
+          {
+            "column": "role",
+            "operator": "=",
+            "value": "A"
           }
         ]
       }

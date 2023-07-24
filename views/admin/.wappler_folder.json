@@ -10,5 +10,13 @@
   "userdata.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "meetings.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "meetingdiary.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }
