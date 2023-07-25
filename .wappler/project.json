@@ -28,7 +28,7 @@
   "targets": [
     {
       "name": "Development",
-      "remoteURL": "http://localhost:3000/",
+      "remoteURL": "http://localhost:3000",
       "access": "local",
       "targetType": "wappler",
       "databaseConnectionType": "sqlite",

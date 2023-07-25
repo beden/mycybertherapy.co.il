@@ -1,0 +1,34 @@
+{
+  "name": "api",
+  "module": "api",
+  "action": "send",
+  "options": {
+    "url": "https://api.dyte.io/v2/meetings",
+    "auth": "username",
+    "username": "{{$_ENV.OrganizationID}}",
+    "password": "{{$_ENV.APIKey}}",
+    "schema": [
+      {
+        "type": "array",
+        "name": "data"
+      },
+      {
+        "type": "object",
+        "name": "headers"
+      }
+    ],
+    "passErrors": false
+  },
+  "output": true,
+  "meta": [
+    {
+      "type": "array",
+      "name": "data"
+    },
+    {
+      "type": "object",
+      "name": "headers"
+    }
+  ],
+  "outputType": "object"
+}

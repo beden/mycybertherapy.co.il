@@ -42,5 +42,13 @@
   "logout.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "open-meeting.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "joinmeeting.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

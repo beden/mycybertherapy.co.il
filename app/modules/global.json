@@ -5,6 +5,20 @@
         "type": "text",
         "name": "regcode"
       }
+    ],
+    "$_ENV": [
+      {
+        "type": "text",
+        "name": "OrganizationID"
+      },
+      {
+        "type": "text",
+        "name": "APIKey"
+      },
+      {
+        "type": "text",
+        "name": "BaseURL"
+      }
     ]
   },
   "exec": {

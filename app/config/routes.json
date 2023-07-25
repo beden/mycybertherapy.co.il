@@ -77,6 +77,16 @@
       "path": "/admin/meetingdiary",
       "page": "admin/meetingdiary",
       "layout": "admin"
+    },
+    {
+      "path": "/open-meeting",
+      "page": "open-meeting",
+      "layout": "main"
+    },
+    {
+      "path": "/joinmeeting",
+      "page": "joinmeeting",
+      "layout": "main"
     }
   ],
   "layouts": {
