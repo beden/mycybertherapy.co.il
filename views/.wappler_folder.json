@@ -50,5 +50,9 @@
   "joinmeeting.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "TEST.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

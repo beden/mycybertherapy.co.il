@@ -1,0 +1,49 @@
+/* Reset default list styles */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Style for RTL list */
+.rtl-list {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Common style for asterisks */
+.asterisk {
+  display: inline-block;
+  width: 20px; /* Adjust this width as per your preference */
+  text-align: left;
+}
+
+/* Style for the default asterisk */
+.asterisk.default::before {
+  content: '* ';
+}
+
+/* Style for the star asterisk */
+.asterisk.star::before {
+  content: '\10033 ';
+}
+
+/* Style for the six-pointed asterisk */
+.asterisk.six-pointed::before {
+  content: '\10042 ';
+}
+
+
+
+
+
+=======================================
+
+
+
+Certainly! Here are a few online Hebrew text converters that you can use: 1. Lingojam Hebrew Text Converter: This converter allows you to convert Hebrew text to various formats, including HTML entities. You can find it at: https://lingojam.com/HebrewTextConverter 2. Hebrew Converter by Lexilogos: This converter supports various conversions, including Hebrew to HTML entities. You can access it at: https://www.lexilogos.com/keyboard/hebrew_conversion.htm 3. Hebrew Text Converter by Morfix: Morfix offers a Hebrew text converter that can convert Hebrew text to HTML entities and other formats. You can find it at: https://www.morfix.co.il/en/hebrew-convert These online converters should make it easier for you to convert Hebrew text to HTML entities without the need for manual replacement. Just paste your Hebrew text into the converter, select the appropriate conversion option, and copy the converted text for use in your HTML document.
+
+
+
+
+
+
