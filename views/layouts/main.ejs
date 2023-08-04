@@ -6,10 +6,9 @@
     <script src="/dmxAppConnect/dmxAppConnect.js"></script>
     <meta charset="UTF-8">
     <title>myCybertherapy</title>
-    <link rel="shortcut icon" href="themainlogo1.jpg">
-
-
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/bootstrap/5/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/css/style.css" />
@@ -27,6 +26,8 @@
     <script src="/dmxAppConnect/dmxSummernote/dmxSummernote.js" defer></script>
 
     <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
+    <script src="/dmxAppConnect/dmxTyped/dmxTyped.js" defer></script>
+    <script src="/dmxAppConnect/dmxTyped/typed.min.js" defer></script>
 </head>
 
 <body is="dmx-app" id="main" title="Online Psychiatry">
@@ -92,22 +93,24 @@
             </div>
         </header>
         <%- await include(content, locals); %>
-            <footer>
-                <div class="container">
-                    <div class="row justify-content-between align-items-center row-cols-sm-1 g-0 align-items-sm-center justify-content-sm-between" dir="rtl">
-                        <div class="col-3 align-self-center gx-sm-0 gy-sm-0 col-sm-3 order-sm-1 d-none d-md-block">
-                            <p class="fw-lighter text-primary text-start text-sm-start"><a href="https://www.amazon.com/Book-David-Manifesto-Revolution-Healthcare/dp/1629671630" target="_blank">The Book Of David</a></p>
-                        </div>
-                        <div class="gy-sm-0 gx-sm-0 me-3 col-sm-4 order-sm-2">
-                            <p class="text-center text-primary fw-lighter text-sm-center">ד"ר מיכאל בנימין&nbsp; &nbsp;2023</p>
-                        </div>
-                        <div class="col-3 gx-sm-0 gy-sm-0 ms-0 align-self-sm-start text-sm-end col-sm-3 d-none d-md-block">
+        <footer>
+            <div class="container">
+                <div class="row justify-content-between align-items-center row-cols-sm-1 g-0 align-items-sm-center justify-content-sm-between" dir="rtl">
+                    <div class="col-3 align-self-center gx-sm-0 gy-sm-0 col-sm-3 order-sm-1 d-none d-md-block">
+                        <p class="fw-lighter text-primary text-start text-sm-start"><a href="https://www.amazon.com/Book-David-Manifesto-Revolution-Healthcare/dp/1629671630" target="_blank">The Book Of David</a></p>
+                    </div>
+                    <div class="gy-sm-0 gx-sm-0 me-3 col-sm-4 order-sm-2">
+                        <p class="text-center text-primary fw-lighter text-sm-center">ד"ר מיכאל בנימין&nbsp; &nbsp;2023</p>
+                    </div>
+                    <div class="col-3 gx-sm-0 gy-sm-0 ms-0 align-self-sm-start text-sm-end col-sm-3 d-none d-md-block">
+                        <p>A nice paragraph<span is="dmx-typed"></span>
+                        </p>
 
-                            <i class="far fa-copyright fa-3x"></i>
-                        </div>
+                        <i class="far fa-copyright fa-4x"></i>
                     </div>
                 </div>
-            </footer>
+            </div>
+        </footer>
     </div>
     <script src="/bootstrap/5/js/bootstrap.bundle.min.js"></script>
 </body>
