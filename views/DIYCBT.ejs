@@ -1,44 +1,66 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="DIYCBT" appconnect="local" components="{dmxSummernote:{}}" jquery_slim_35="cdn" dmx-bind:title="'DIY CBT'" -->
-<div class="container mt-5">
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="DIYCBT" appconnect="local" components="{dmxSummernote:{}}" jquery_slim_35="cdn" lang="he" dir="rtl" title="DIYCBT" -->
+<div class="mt-5 container-fluid text-primary text-end">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top img-fluid img-thumbnail shadow-none d-none d-md-inline w-100 h-100" alt="Card image cap" src="/assets/images/historyrel.jpg">
+                <div class="card-body">
+                    <h4 class="card-title text-center fw-lighter" dir="rtl">מה למדת על עצמך?</h4>
+                    <p class="card-text" dir="rtl">אתה תתבקש לספר מה למדת על עצמך בכל סעיף.<br>
+                        כדי להבין את הנושא לעומק, אנא עיין בקישור וודא שאתה מבין את הסעיפים השונים היטב.<br>
+                        ככל שתמשיך לענות על יותר ויותר סעיפים, תראה, עם קבלת המשוב, שאתה נוטה להתנהג, לחשוב ולחוש בדרכים זהות, שהן בדרך כלל לא הולמות.<br>
+                        עם ההכרה מגיעה המודעות, ועם ההבנה, תתחיל לשנות את המגמה.<br><a href="/bnh" target="_blank">
+                            קרא את הקישור.
+                        </a></p>
+                    <p class="card-text text-center">
+                        <br>
+                        <a href="#" class="btn btn-primary btn-lg">תשתתף בסמינאר&nbsp;</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
     <div class="row">
         <div class="col-3 d-none d-md-block"></div>
         <div class="col">
-            <form id="form1" is="dmx-serverconnect-form" method="post" action="/api/diycbt/diycbtform" dmx-on:success="notifies_global.success('Response Added')" dmx-on:error="notifies_global.danger('Server Error')" dmx-on:unauthorized="notifies_global.warning('Unauthorised')">
-                <div class="form-group md-3"> <label for="ci" class="form-label">CI</label>
-                    <input type="text" class="form-control" id="ci" name="ci" aria-describedby="input1_help" placeholder="Enter some text">
-                    <small id="input1_help" class="form-text text-muted"><a href="/mycbtexplanation" target="_blank">הסבר מלאי</a></small>
+            <form id="form1" is="dmx-serverconnect-form" method="post" action="/api/diycbt/diycbtform" dmx-on:success="notifies_global.success('Response Added')" dmx-on:error="notifies_global.danger('Server Error')" dmx-on:unauthorized="notifies_global.warning('Unauthorised')" dir="rtl" lang="he" title="DIYCBT">
+                <div class="form-group md-3">
+                    <input type="text" class="form-control" id="ci" name="ci" aria-describedby="input1_help" placeholder="תאר מה קרה -- בלי הסברים ">
+                    <small id="input1_help" class="form-text text-muted"></small>
                 </div>
-                <div class="form-group md-3"> <label for="cbt" class="form-label">CBT</label>
-                    <input type="text" class="form-control" id="cbt" name="cbt" aria-describedby="input1_help" placeholder="Enter some text">
-                    <small id="input1_help1" class="form-text text-muted">Your input is very valuable.</small>
+                <div class="form-group md-3"> <label for="cbt" class="form-label">קוגניציה</label>
+                    <input type="text" class="form-control" id="cbt" name="cbt" aria-describedby="input1_help" placeholder="מה למדת על החשיבה דאז?">
+                    <small id="input1_help1" class="form-text text-muted">בעיקר מה חשבת על עצמך, אחרים כמה נכון וכמה רלוונטי, מה למדת?</small>
                 </div>
-                <div class="form-group md-3"> <label for="relations" class="form-label">Relations&nbsp;</label>
-                    <input type="text" class="form-control" id="relations" name="relations" aria-describedby="input1_help" placeholder="Enter some text">
-                    <small id="input1_help2" class="form-text text-muted">Your input is very valuable.</small>
+                <div class="form-group md-3"> <label for="relations" class="form-label">מערכת יחסים</label>
+                    <input type="text" class="form-control" id="relations" name="relations" aria-describedby="input1_help" placeholder="מה למדת על עצמך במערכת יחסים אלה?">
+                    <small id="input1_help2" class="form-text text-muted">מי התנהג כמבורג, הורה או ילד? אם המערכת תקועה?&nbsp;</small>
                 </div>
-                <div class="form-group md-3"> <label for="attention" class="form-label">Attention</label>
-                    <input type="text" class="form-control" id="attention" name="attention" aria-describedby="input1_help" placeholder="Enter some text">
-                    <small id="input1_help3" class="form-text text-muted">Your input is very valuable.</small>
+                <div class="form-group md-3"> <label for="attention" class="form-label">קשב ותשומת&nbsp;</label>
+                    <input type="text" class="form-control" id="attention" name="attention" aria-describedby="input1_help" placeholder="מה למדת על אופן הקשבה שלך באותו זמן?">
+                    <small id="input1_help3" class="form-text text-muted">כאשר השהי דיבר, נסיתי להבין או תרגלת דקכים להוריד החרדה שלך ?</small>
                 </div>
-                <div class="form-group md-3"> <label for="feelings" class="form-label">Feelings</label>
-                    <input type="text" class="form-control" id="feelings" name="feelings" aria-describedby="input1_help" placeholder="Enter some text">
-                    <small id="input1_help4" class="form-text text-muted">Your input is very valuable.</small>
+                <div class="form-group md-3"> <label for="feelings" class="form-label">הרגשות&nbsp;</label>
+                    <input type="text" class="form-control" id="feelings" name="feelings" aria-describedby="input1_help" placeholder="מה למדת על תגובתך ? ">
+                    <small id="input1_help4" class="form-text text-muted">היית ער לרגש? שלטת על הגש או הרגש שלט עליך? התגובה הייתה הולמת המצב?&nbsp;</small>
                 </div>
-                <div class="form-group md-3"> <label for="existential" class="form-label">Existential</label>
-                    <input type="text" class="form-control" id="existential" name="existential" aria-describedby="input1_help" placeholder="Enter some text">
-                    <small id="input1_help5" class="form-text text-muted">Your input is very valuable.</small>
+                <div class="form-group md-3"> <label for="existential" class="form-label">קיומי</label>
+                    <input type="text" class="form-control" id="existential" name="existential" aria-describedby="input1_help" placeholder="מה למדת על ההמשך ?">
+                    <small id="input1_help5" class="form-text text-muted">רצית להיות במצב? רוצה לשנות , אם כן איך?&nbsp;</small>
                 </div>
-                <div class="form-group md-3"> <label for="summation" class="form-label">Summation</label>
-                    <input type="text" class="form-control" id="summation" name="summation" aria-describedby="input1_help" placeholder="Enter some text">
-                    <small id="input1_help6" class="form-text text-muted">Your input is very valuable.</small>
+                <div class="form-group md-3"> <label for="summation" class="form-label">סיכום</label>
+                    <input type="text" class="form-control" id="summation" name="summation" aria-describedby="input1_help" placeholder="מה למדת ממכלול התשובות שלך ?">
+                    <small id="input1_help6" class="form-text text-muted">אתה רואה נטיות, דפוסי התנהגות, חשיבה או הרגשות שמופיעים וראוי לשינוי?&nbsp;</small>
                 </div>
                 <div class="form-group md-3 d-none visually-hidden">
                     <input type="text" class="form-control" id="user_id" name="user_id" aria-describedby="input1_help" placeholder="Enter some text" dmx-bind:value="conn_who_am_i.data.identity">
                 </div>
-                <div class="row">
-                    <div class="col"></div>
-                    <div class="col"><button id="btn1" class="btn btn-primary active btn-lg" type="submit">להכניס תגובה</button></div>
-                    <div class="col"></div>
+                <div class="row justify-content-between">
+                    <div class="col d-none d-sm-block"></div>
+                    <div class="col align-self-center text-center"><button id="btn1" class="btn btn-primary active btn-lg" type="submit" lang="he">להכניס תשובותיך </button></div>
+                    <div class="col d-none d-sm-block"></div>
                 </div>
 
             </form>
