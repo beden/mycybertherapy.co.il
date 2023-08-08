@@ -1,7 +1,7 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="DIYCBT" appconnect="local" components="{dmxSummernote:{}}" jquery_slim_35="cdn" lang="he" dir="rtl" title="DIYCBT" -->
 <div class="mt-5 container-fluid text-primary text-end">
     <div class="row">
-        <div class="col"></div>
+        <div class="col-lg-2 col-xl-2 col-xxl-3"></div>
         <div class="col">
             <div class="card">
                 <img class="card-img-top img-fluid img-thumbnail shadow-none d-none d-md-inline w-100 h-100" alt="Card image cap" src="/assets/images/historyrel.jpg">
@@ -20,10 +20,10 @@
                 </div>
             </div>
         </div>
-        <div class="col"></div>
+        <div class="col-lg-2 col-xl-2 col-xxl-3"></div>
     </div>
     <div class="row">
-        <div class="col-3 d-none d-md-block"></div>
+        <div class="col-3 d-none d-md-block offset-lg-2 col-lg-2 col-xl-2 col-xxl-2"></div>
         <div class="col">
             <form id="form1" is="dmx-serverconnect-form" method="post" action="/api/diycbt/diycbtform" dmx-on:success="notifies_global.success('Response Added')" dmx-on:error="notifies_global.danger('Server Error')" dmx-on:unauthorized="notifies_global.warning('Unauthorised')" dir="rtl" lang="he" title="DIYCBT">
                 <div class="form-group md-3 border rounded border-info border-1">
@@ -66,7 +66,7 @@
 
             </form>
         </div>
-        <div class="col-3 d-none d-md-block"></div>
+        <div class="col-3 d-none d-md-block col-lg-2 offset-lg-2 col-xl-2 col-xxl-2"></div>
     </div>
 </div>
 <meta name="ac:route" content="/diycbt">
