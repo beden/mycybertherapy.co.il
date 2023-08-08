@@ -25,7 +25,7 @@
               "nullable": true
             }
           },
-          "part_role": {
+          "role": {
             "db": {
               "type": "string",
               "default": "function i(t){t!==x&&r(this,t),this._bitField=0,this._fulfillmentHandler0=void 0,this._rejectionHandler0=void 0,this._promise0=void 0,this._receiver0=void 0,this._resolveFromExecutor(t),this._promiseCreated(),this._fireEvent(\"promiseCreated\",this)}",
