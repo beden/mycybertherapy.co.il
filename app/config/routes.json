@@ -87,6 +87,11 @@
       "path": "/joinmeeting",
       "page": "joinmeeting",
       "layout": "main"
+    },
+    {
+      "path": "/Letter",
+      "page": "Letter",
+      "layout": "admin"
     }
   ],
   "layouts": {
