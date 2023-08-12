@@ -42,8 +42,8 @@
 
 <body is="dmx-app" id="main" title="Online Psychiatry">
     <dmx-cookie-manager id="cookies1"></dmx-cookie-manager>
-    <div class="modal h-auto shadow-sm" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1" show="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal h-auto" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1" show="true">
+        <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="d-block">
