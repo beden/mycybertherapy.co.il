@@ -31,12 +31,19 @@
     <script src="/dmxAppConnect/dmxTyped/typed.min.js" defer></script>
     <link rel="icon" href="n/favicon-16x16.png">
     <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/@fullcalendar/core@4.4.2/main.min.css" />
+    <script src="https://unpkg.com/@fullcalendar/core@4.4.2/main.min.js" defer></script>
+    <script src="https://unpkg.com/@fullcalendar/core@4.4.2/locales-all.min.js" defer></script>
+    <script src="https://unpkg.com/@fullcalendar/interaction@4.4.2/main.min.js" defer></script>
+    <script src="https://unpkg.com/@fullcalendar/daygrid@4.4.2/main.min.js" defer></script>
+    <script src="/dmxAppConnect/dmxCalendar/dmxCalendar.js" defer></script>
+    <script src="https://unpkg.com/@fullcalendar/google-calendar@4.4.2/main.min.js" defer></script>
 </head>
 
 <body is="dmx-app" id="main" title="Online Psychiatry">
     <dmx-cookie-manager id="cookies1"></dmx-cookie-manager>
-    <div class="modal" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1" show="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal h-auto shadow-sm" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1" show="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="d-block">
@@ -60,7 +67,6 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">לסגור להמשך</button>

@@ -1,6 +1,0 @@
-{
-  "name": "smtp",
-  "module": "mail",
-  "action": "setup",
-  "options": {}
-}

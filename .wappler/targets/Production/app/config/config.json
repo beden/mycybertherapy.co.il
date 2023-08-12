@@ -1,9 +1,0 @@
-{
-  "debug": true,
-  "secret": "2qoB6wbgNCwRUjm",
-  "env": {
-    "OrganizationID": "ca3bedda-f846-47f3-b973-cbb005944d0b",
-    "APIKey": "ca3efff2ec806d255f5d",
-    "BaseURL": "https://api.dyte.io/v2"
-  }
-}
