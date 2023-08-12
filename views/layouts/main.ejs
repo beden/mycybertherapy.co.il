@@ -29,7 +29,6 @@
     <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
     <script src="/dmxAppConnect/dmxTyped/dmxTyped.js" defer></script>
     <script src="/dmxAppConnect/dmxTyped/typed.min.js" defer></script>
-    <link rel="icon" href="n/favicon-16x16.png">
     <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
     <link rel="stylesheet" href="https://unpkg.com/@fullcalendar/core@4.4.2/main.min.css" />
     <script src="https://unpkg.com/@fullcalendar/core@4.4.2/main.min.js" defer></script>
@@ -42,7 +41,7 @@
 
 <body is="dmx-app" id="main" title="Online Psychiatry">
     <dmx-cookie-manager id="cookies1"></dmx-cookie-manager>
-    <div class="modal h-auto" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1">
+    <div class="modal h-auto" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1" show="true">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
