@@ -30,9 +30,44 @@
     <script src="/dmxAppConnect/dmxTyped/dmxTyped.js" defer></script>
     <script src="/dmxAppConnect/dmxTyped/typed.min.js" defer></script>
     <link rel="icon" href="n/favicon-16x16.png">
+    <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
 </head>
 
 <body is="dmx-app" id="main" title="Online Psychiatry">
+    <dmx-cookie-manager id="cookies1"></dmx-cookie-manager>
+    <div class="modal" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1" show="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-block">
+                        <div class="card">
+                            <img class="card-img-top img-fluid img-thumbnail w-auto" alt="Card image cap" src="/assets/images/warning.jpg">
+                            <div class="card-body">
+                                <h4 class="card-title text-primary fw-lighter">תזכורת&nbsp;</h4>
+                                <p class="card-text">
+                                <p dir="rtl" class="text-primary fw-lighter">שלום&lt;&lt;&gt;&gt;,
+
+                                    <br> ברוך הבא לגרסת mycybertherapy הישראלית.<br>&nbsp;האתר מוקדש לעזור לך בדרכים שונות שאתה יכול לבחור. <br>תמיד נתחיל עם ראיון. <br>כאשר אתה מדבר איתי באינטרנט, חשוב שתשב בחדר שלא חשוך מדי ויש אור מלפנים ומעלייך. <br>אני אקליט את הראיון, ואם תרצה, תוכל לקבל עותק.
+                                    <br>&nbsp;אתה יכול ליצור איתי או עם אחרים קשר באמצעות יישום WhatsApp הייעודי לאתר זה.
+                                    <br>&nbsp;<b><u>עלינו לשמור על כללי פרטיות מחמירים</u></b>. <br><i>אתה רשאי לשתף רק את שמך, את הדוא"ל שלך או כל סוג אחר של תקשורת איתי ועם אף אחד אחר. אם תבוא על אלה, אקנח את הקשר שלך עם האתר</i><br><br>.
+                                    אני זמין באופן חופשי ב-WhatsApp; אתה יכול לכתוב לי באתר. <br><i>האתר אינו אמור להיות אתר חירום. <br></i>אני מבטיח לנסות לענות בתוך 24 שעות, אך זה לא תמיד אפשרי ואל תסמוך על זה. <br><i>אם אתה זקוק לגישה מיידית לפסיכיאטר שלך בכל עת, אני חושש שזה לא האתר בשבילך</i>.
+                                    <br>&nbsp;לאחר שקראת את ההוראות, אנא המשך וקבע פגישה.
+
+                                    &nbsp;אני יכול לעזור לך, אבל עלינו להגביל את הציפיות שלנו להיות בתחום המצי reality.<br><br>
+                                </p>
+                                <p class="text-center fw-lighter text-primary">&nbsp;בברכה,<br><i>ד"ר מיכאל בנימין</i></p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">לסגור להמשך</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <dmx-notifications id="notifies_global"></dmx-notifications>
     <div is="dmx-browser" id="browser_global"></div>
     <dmx-serverconnect id="conn_who_am_i" url="/api/register/who_am_i"></dmx-serverconnect>
@@ -65,18 +100,17 @@
                                     <a class="nav-item nav-link" href="/bnh">בראיות הנפש</a>
                                     <a class="nav-item nav-link" href="/mycbtexplanation">הסבר לטיפול&nbsp;</a>
                                     <a class="nav-item nav-link" href="/diycbt" dmx-show="conn_who_am_i.data.current_user_identity&gt;=1">דף טיפול&nbsp;</a>
-                                    <a class="nav-item nav-link" href="#">תוצאות</a>
+                                    <a class="nav-item nav-link" href="#" dmx-show="conn_who_am_i.data.current_user_identity&gt;=1">תוצאות</a>
                                     <a class="nav-item nav-link" href="/cou">תנאי שימוש</a>
-                                    <div class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdown1" role="button" aria-haspopup="true" aria-expanded="false">Conference</a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown1">
+                                    <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdown1" role="button" aria-haspopup="true" aria-expanded="false">און-ליין</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdown1" dmx-show="conn_who_am_i.data.current_user_identity>=1">
                                             <a class="dropdown-item" href="/open-meeting">Open Meeting as Host</a>
                                             <a class="dropdown-item" href="/joinmeeting">Join Meeting as Participant</a>
                                         </div>
                                     </div>
-                                    <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbar1_dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" wappler-command="editContent">Services</a>
-                                        <div class="dropdown-menu" aria-labelledby="navbar1_dropdown">
-                                            <a class="dropdown-item" href="#">SMI</a>
+                                    <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbar1_dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">שירותים</a>
+                                        <div class="dropdown-menu" aria-labelledby="navbar1_dropdown" dmx-show="conn_who_am_i.data.current_user_identity>=1">
+
                                             <a class="dropdown-item" href="#">לקבוע פגישה </a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">סמינטאר</a>

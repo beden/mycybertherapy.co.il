@@ -14,5 +14,13 @@ dmx.config({
         "name": "user_id"
       }
     ]
+  },
+  "main": {
+    "cookies": [
+      {
+        "type": "text",
+        "name": "showmodal"
+      }
+    ]
   }
 });

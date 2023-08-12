@@ -17,7 +17,6 @@
       "type": "cdn"
     }
   ],
-  "hostingType": "wappler",
   "projectServerModel": "node",
   "runtime": "capacitor",
   "webRootFolder": "/public",
@@ -28,31 +27,11 @@
   "targets": [
     {
       "name": "Development",
-      "remoteURL": "http://localhost:3000",
-      "access": "local",
-      "targetType": "wappler",
-      "databaseConnectionType": "sqlite",
-      "sqliteDbFile": "/db/db_dev.sqlite3"
-    },
-    {
-      "name": "Production",
-      "remoteURL": "https://mycybertherapy.co.il",
-      "access": "ftp",
-      "targetType": "wappler",
-      "databaseConnectionType": "custom",
-      "usage": "production",
-      "db_host": "45.8.224.95",
-      "db_port": "3306",
-      "db_user": "cyberjew",
-      "db_password": "nf$TH39cyber",
-      "db_database": "cyberjew_MichaelB",
-      "ftpServer": "45.8.224.95",
-      "ftpRemoteFolder": "nodejsapp",
-      "ftpUser": "cyberjew",
-      "ftpPassword": "0ccbf8d3d8cc80f13adc7060"
+      "remoteURL": "http://localhost:3000/",
+      "access": "local"
     }
   ],
-  "activeTarget": "Production",
+  "activeTarget": "Development",
   "projectType": "web",
   "extensions": [],
   "activeGitRemote": "origin"
