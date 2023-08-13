@@ -39,7 +39,8 @@
     "socket.io": "^4.6.1",
     "sqlite3": "^5.0.2",
     "unzipper": "^0.10.11",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "wappler-youtube-player": "^1.0.0"
   },
   "nodemonConfig": {
     "watch": [

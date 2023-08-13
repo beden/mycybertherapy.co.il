@@ -49,6 +49,10 @@
   ],
   "activeTarget": "Production",
   "projectType": "web",
-  "extensions": [],
+  "extensions": [
+    {
+      "name": "wappler-youtube-player"
+    }
+  ],
   "activeGitRemote": "origin"
 }

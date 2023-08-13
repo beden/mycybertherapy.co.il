@@ -6,7 +6,7 @@
     <script src="/dmxAppConnect/dmxAppConnect.js"></script>
     <meta charset="UTF-8">
     <title>myCybertherapy</title>
-    <link rel="stylesheet" href=https://use.fontawesome.com/releases/v5.14.0/css/all.css integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
@@ -37,11 +37,13 @@
     <script src="https://unpkg.com/@fullcalendar/daygrid@4.4.2/main.min.js" defer></script>
     <script src="/dmxAppConnect/dmxCalendar/dmxCalendar.js" defer></script>
     <script src="https://unpkg.com/@fullcalendar/google-calendar@4.4.2/main.min.js" defer></script>
+    <script src="/dmxAppConnect/dmxVideo/dmxVideo.js" defer></script>
+    <script src="/js/dmx-youtube-player.js" defer></script>
 </head>
 
 <body is="dmx-app" id="main" title="Online Psychiatry">
     <dmx-cookie-manager id="cookies1"></dmx-cookie-manager>
-    <div class="modal h-auto" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1" show="true">
+    <div class="modal h-auto" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
