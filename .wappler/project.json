@@ -5,15 +5,15 @@
   "designFramework": "bootstrap5",
   "frameworks": [
     {
-      "name": "bootstrap5",
-      "type": "local"
-    },
-    {
       "name": "appConnect",
       "type": "local"
     },
     {
       "name": "fontawesome_5",
+      "type": "cdn"
+    },
+    {
+      "name": "bootstrap5",
       "type": "cdn"
     }
   ],
@@ -47,7 +47,7 @@
       "ftpPassword": "0ccbf8d3d8cc80f13adc7060"
     }
   ],
-  "activeTarget": "Production",
+  "activeTarget": "Development",
   "projectType": "web",
   "extensions": [
     {
