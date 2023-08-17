@@ -1,1 +1,50 @@
-{}
+{
+  "schema": {
+    "tables": {
+      "roles": {
+        "db": {},
+        "columns": {
+          "id_roles": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "id_users": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "role": {
+            "db": {
+              "type": "string",
+              "default": "function i(t){t!==x&&r(this,t),this._bitField=0,this._fulfillmentHandler0=void 0,this._rejectionHandler0=void 0,this._promise0=void 0,this._receiver0=void 0,this._resolveFromExecutor(t),this._promiseCreated(),this._fireEvent(\"promiseCreated\",this)}",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "users": {
+        "db": {}
+      },
+      "diycbt": {
+        "db": {}
+      }
+    },
+    "views": {}
+  },
+  "type": "sqlite3",
+  "connection": {
+    "filename": "/db_dev.slqlite3"
+  },
+  "direct": true
+}
