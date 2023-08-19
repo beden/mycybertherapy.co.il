@@ -231,13 +231,7 @@
               "nullable": true
             }
           },
-          "role": {
-            "db_edits": {
-              "name": "role"
-            },
-            "status": {
-              "new": true
-            },
+          "role_id": {
             "db": {
               "type": "string",
               "maxLength": 255,
