@@ -47,7 +47,7 @@
       "ftpPassword": "0ccbf8d3d8cc80f13adc7060"
     }
   ],
-  "activeTarget": "Production",
+  "activeTarget": "Development",
   "projectType": "web",
   "extensions": [
     {
