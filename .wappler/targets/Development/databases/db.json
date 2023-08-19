@@ -231,7 +231,7 @@
               "nullable": true
             }
           },
-          "role_id": {
+          "role": {
             "db": {
               "type": "string",
               "maxLength": 255,
@@ -268,12 +268,6 @@
               "primary": false,
               "unique": false,
               "nullable": true
-            },
-            "db_edits": {
-              "useTz": true
-            },
-            "status": {
-              "modified": true
             }
           },
           "title": {
