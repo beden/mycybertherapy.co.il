@@ -1,0 +1,156 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query_appointments",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "conference",
+              "column": "conference_id"
+            },
+            {
+              "table": "conference",
+              "column": "meeting_id"
+            },
+            {
+              "table": "conference",
+              "column": "meetingwhen"
+            },
+            {
+              "table": "conference",
+              "column": "title"
+            },
+            {
+              "table": "conference",
+              "column": "type"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "conference"
+          },
+          "primary": "conference_id",
+          "joins": [],
+          "sub": {
+            "participants": {
+              "type": "select",
+              "table": {
+                "name": "conference_participants",
+                "alias": "participants"
+              },
+              "key": "conference_id",
+              "columns": [
+                {
+                  "table": "participants",
+                  "column": "participant_id"
+                },
+                {
+                  "table": "participants",
+                  "column": "user_id"
+                },
+                {
+                  "table": "participants",
+                  "column": "role_id"
+                },
+                {
+                  "table": "participants",
+                  "column": "p_id"
+                }
+              ],
+              "params": [],
+              "primary": "p_id",
+              "joins": [
+                {
+                  "table": "users",
+                  "column": "*",
+                  "type": "LEFT",
+                  "clauses": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "table": "users",
+                        "column": "id_users",
+                        "operator": "equal",
+                        "operation": "=",
+                        "value": {
+                          "table": "participants",
+                          "column": "user_id"
+                        }
+                      }
+                    ]
+                  },
+                  "primary": "id_users"
+                }
+              ],
+              "query": "select `participants`.`participant_id`, `participants`.`user_id`, `participants`.`role_id`, `participants`.`p_id` from `conference_participants` as `participants` left join `users` on `users`.`id_users` = `participants`.`user_id`"
+            }
+          },
+          "query": "select `conference_id`, `meeting_id`, `meetingwhen`, `title`, `type` from `conference`"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "conference_id"
+        },
+        {
+          "type": "text",
+          "name": "meeting_id"
+        },
+        {
+          "type": "datetime",
+          "name": "meetingwhen"
+        },
+        {
+          "type": "text",
+          "name": "title"
+        },
+        {
+          "type": "text",
+          "name": "type"
+        },
+        {
+          "name": "participants",
+          "type": "array",
+          "sub": [
+            {
+              "type": "text",
+              "name": "participant_id"
+            },
+            {
+              "type": "text",
+              "name": "user_id"
+            },
+            {
+              "type": "text",
+              "name": "role_id"
+            },
+            {
+              "type": "number",
+              "name": "p_id"
+            }
+          ]
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}

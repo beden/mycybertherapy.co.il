@@ -268,9 +268,24 @@
               "primary": false,
               "unique": false,
               "nullable": true
+            },
+            "db_edits": {
+              "useTz": true
+            },
+            "status": {
+              "modified": true
             }
           },
           "title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "type": {
             "db": {
               "type": "string",
               "maxLength": 255,

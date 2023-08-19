@@ -1,4 +1,42 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="meetingdiary" appConnect="local" components="{dmxCalendar:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="meetingdiary" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxBootstrap5Alert:{}}" -->
+<div class="alert" id="alert1" is="dmx-bs5-alert" role="alert">
+    <p>This is a nice alert!</p>
+</div>
+<dmx-serverconnect id="serverconnect2" url="/api/diary/setup_apointment" dmx-on:success="modaladd.hide();browser_global.notifies_global.success()" dmx-on:error="browser_global.notifies_global.danger()" dmx-on:invalid="browser_global.notifies_global.danger();browser_global.notifies_global.warning()"></dmx-serverconnect>
+<div class="modal" id="modaladd" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary fw-lighter">Set Calendar&nbsp;</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="mib_form" method="post">
+                    <div class="row">
+                        <input id="title" name="title" type="text" class="form-control" placeholder="Kind of Gig">
+                    </div>
+                    <div class="row">
+                        <input id="meeting_id" name="meeting_id " type="text" class="form-control" placeholder="meeting_id">
+                    </div>
+                    <div class="row">
+                        <input id="type" name="type" type="text" class="form-control" placeholder="Individual or Seminar">
+                    </div>
+                    <div class="row">
+                        <input id="meetingwhen" name="meetingwhen" type="hidden" class="form-control" dmx-bind:value="calendar1.currentStart">
+                    </div>
+                    <div class="row">
+                        <input id="type" name="type" type="text" class="form-control">
+                    </div>
+                    <button id="btn1" class="btn btn-lg text-primary fw-lighter active" type="submit">Press To Set&nbsp;</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<dmx-serverconnect id="serverconnect1" url="/api/diary/get_appointments"></dmx-serverconnect>
 <meta name="ac:route" content="/admin/meetingdiary">
 <div class="container">
     <div class="row">
@@ -9,9 +47,9 @@
     <div class="row">
         <div class="col-3"></div>
         <div class="col">
-            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek,dayGridDay" constraint="" hide-non-current-dates="true" no-event-overlap="true" no-fixed-week-count="true" selectable="true" editable="true" now-indicator="true" locale="he" aspect-ratio="2.05">
-                <dmx-calendar-source id="source1" color="#f26c6c" background-color="#d19292" border-color="#f03636" text-color="#426bcc" editable="true">
-                    <dmx-calendar-event id="event1" title="My Event" start="2023-08-19T11:00" end="2023-08-19T12:00" class="Tuesday We"></dmx-calendar-event>
+            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek,dayGridDay" hide-non-current-dates="true" no-event-overlap="true" no-fixed-week-count="true" selectable="true" editable="true" now-indicator="true" locale="he" aspect-ratio="2.05" dmx-on:dateclick="run({run:{action:`modaladd.show()`,outputType:'text'}})">
+                <dmx-calendar-source id="one_on_many" dmx-bind:events="serverconnect1.data.query_appointments" event-id="conference_id" event-title="title" event-start="meetingwhen" color="rgba(212, 99, 42, 0.6)" background-color="#d48282" border-color="#290c0c" text-color="#426bcc" dmx-show=""></dmx-calendar-source>
+                <dmx-calendar-source id="one_on_one" color="#f26c6c" background-color="#d19292" border-color="#f03636" text-color="#426bcc" editable="true" dmx-bind:events="serverconnect1.data.query_appointments" event-id="conference_id" event-title="title" event-start="meetingwhen">
                 </dmx-calendar-source>
             </dmx-calendar>
         </div>

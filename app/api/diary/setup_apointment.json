@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/meetingdiary.ejs",
+      "linkedForm": "mib_form"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "meeting_id"
+      },
+      {
+        "type": "datetime",
+        "fieldName": "meetingwhen",
+        "name": "meetingwhen"
+      },
+      {
+        "type": "text",
+        "fieldName": "title",
+        "name": "title"
+      },
+      {
+        "type": "text",
+        "fieldName": "type",
+        "multiple": true,
+        "name": "type"
+      },
+      {
+        "type": "text",
+        "fieldName": "meeting_id ",
+        "name": "meeting_id "
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "conference",
+              "column": "meeting_id",
+              "type": "text",
+              "value": "{{$_POST.meeting_id}}"
+            },
+            {
+              "table": "conference",
+              "column": "meetingwhen",
+              "type": "datetime",
+              "value": "{{$_POST.meetingwhen}}"
+            },
+            {
+              "table": "conference",
+              "column": "title",
+              "type": "text",
+              "value": "{{$_POST.title}}"
+            },
+            {
+              "table": "conference",
+              "column": "type",
+              "type": "text",
+              "value": "{{$_POST.type}}"
+            }
+          ],
+          "table": "conference",
+          "returning": "conference_id",
+          "query": "insert into `conference` (`meeting_id`, `meetingwhen`, `title`, `type`) values (?, ?, ?, ?) returning `conference_id`",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.meeting_id}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.meetingwhen}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.title}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.type}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}
