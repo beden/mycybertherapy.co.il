@@ -226,7 +226,7 @@
               "nullable": true
             }
           },
-          "role_id": {
+          "role": {
             "db": {
               "type": "string",
               "maxLength": 255,
@@ -267,6 +267,15 @@
             }
           },
           "title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "type": {
             "db": {
               "type": "string",
               "maxLength": 255,
