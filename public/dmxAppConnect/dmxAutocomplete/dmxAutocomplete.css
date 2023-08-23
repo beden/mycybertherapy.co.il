@@ -1,0 +1,31 @@
+input[is="dmx-autocomplete"] {
+    position: relative;
+}
+
+.dmx-autocomplete-items {
+    position: absolute;
+    background: #fff;
+    color: #495057;
+    border: 1px solid #ced4da;
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+    overflow: auto;
+    max-height: 50vh;
+    z-index: 1000;
+}
+
+.dmx-autocomplete-item {
+    padding: .375rem .75rem;
+    cursor: default;
+    white-space: nowrap;
+}
+
+.dmx-autocomplete-item:hover {
+    background: #e9ecef;
+}
+
+.dmx-autocomplete-active {
+    background: #007bff;
+    background: Highlight;
+    color: #fff;
+    color: HighlightText;
+}

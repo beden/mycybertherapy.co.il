@@ -1,0 +1,235 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "attend_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "diary_attedees",
+                "column": "id_user"
+              },
+              {
+                "table": "users",
+                "column": "first_name"
+              },
+              {
+                "table": "users",
+                "column": "family_name"
+              },
+              {
+                "table": "users",
+                "column": "email"
+              },
+              {
+                "table": "diary_attedees",
+                "column": "diary_id"
+              },
+              {
+                "table": "diary",
+                "column": "title"
+              },
+              {
+                "table": "diary",
+                "column": "diary_date"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.attend_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "diary_attedees"
+            },
+            "primary": "attend_id",
+            "joins": [
+              {
+                "table": "users",
+                "column": "*",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "users",
+                      "column": "id_users",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "diary_attedees",
+                        "column": "id_user"
+                      }
+                    }
+                  ]
+                },
+                "primary": "id_users"
+              },
+              {
+                "table": "diary",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "diary",
+                      "column": "diary_id",
+                      "operation": "=",
+                      "operator": "equal",
+                      "value": {
+                        "table": "diary_attedees",
+                        "column": "diary_id",
+                        "type": "number"
+                      }
+                    }
+                  ]
+                },
+                "primary": "diary_id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "diary_attedees.attend_id",
+                  "field": "diary_attedees.attend_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.attend_id}}",
+                  "data": {
+                    "table": "diary_attedees",
+                    "column": "attend_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "attend_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `diary_attedees`.`id_user`, `users`.`first_name`, `users`.`family_name`, `users`.`email`, `diary_attedees`.`diary_id`, `diary`.`title`, `diary`.`diary_date` from `diary_attedees` left join `users` on `users`.`id_users` = `diary_attedees`.`id_user` inner join `diary` on `diary`.`diary_id` = `diary_attedees`.`diary_id` where `diary_attedees`.`attend_id` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "id_user"
+          },
+          {
+            "type": "text",
+            "name": "first_name"
+          },
+          {
+            "type": "text",
+            "name": "family_name"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "number",
+            "name": "diary_id"
+          },
+          {
+            "type": "text",
+            "name": "title"
+          },
+          {
+            "type": "datetime",
+            "name": "diary_date"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "delete",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "diary_attedees",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "attend_id",
+                  "field": "attend_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.attend_id}}",
+                  "data": {
+                    "column": "attend_id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "attend_id",
+            "query": "delete from `diary_attedees` where `attend_id` = ?",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.attend_id}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "",
+        "module": "mail",
+        "action": "send",
+        "options": {
+          "instance": "smtp",
+          "subject": "MyCybertherapy.co.il Message",
+          "fromName": "MYCybertherapy",
+          "fromEmail": "noreply@mycybertherapy.co.il",
+          "toName": "{{query.family_name+' '+query.first_name}}",
+          "toEmail": "{{query.email}}",
+          "body": "You have been removed from the scheduled meeting \"{{query.title}}\" at {{query.diary_date.formatDate('HH:mm ', false)}} on {{query.diary_date.formatDate('dd/MM/yyyy', false)}} \n\nShould you not have expectsd this then please contact Dr Benjamin"
+        },
+        "output": true
+      }
+    ]
+  }
+}

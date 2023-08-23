@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "filter"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "users",
+              "column": "*"
+            }
+          ],
+          "params": [
+            {
+              "operator": "contains",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.filter}}",
+              "test": ""
+            },
+            {
+              "operator": "contains",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_GET.filter}}",
+              "test": ""
+            },
+            {
+              "operator": "contains",
+              "type": "expression",
+              "name": ":P3",
+              "value": "{{$_GET.filter}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "users"
+          },
+          "primary": "id_users",
+          "joins": [],
+          "wheres": {
+            "condition": "OR",
+            "rules": [
+              {
+                "id": "users.first_name",
+                "field": "users.first_name",
+                "type": "string",
+                "operator": "contains",
+                "value": "{{$_GET.filter}}",
+                "data": {
+                  "table": "users",
+                  "column": "first_name",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "first_name"
+                  }
+                },
+                "operation": "LIKE",
+                "table": "users"
+              },
+              {
+                "id": "users.family_name",
+                "field": "users.family_name",
+                "type": "string",
+                "operator": "contains",
+                "value": "{{$_GET.filter}}",
+                "data": {
+                  "table": "users",
+                  "column": "family_name",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "family_name"
+                  }
+                },
+                "operation": "LIKE",
+                "table": "users"
+              },
+              {
+                "id": "users.email",
+                "field": "users.email",
+                "type": "string",
+                "operator": "contains",
+                "value": "{{$_GET.filter}}",
+                "data": {
+                  "table": "users",
+                  "column": "email",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "email"
+                  }
+                },
+                "operation": "LIKE",
+                "table": "users"
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "orders": [
+            {
+              "table": "users",
+              "column": "family_name",
+              "direction": "ASC",
+              "recid": 1
+            }
+          ],
+          "query": "select * from `users` where `users`.`first_name` like ? or `users`.`family_name` like ? or `users`.`email` like ? order by `family_name` ASC"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "id_users"
+        },
+        {
+          "type": "text",
+          "name": "first_name"
+        },
+        {
+          "type": "text",
+          "name": "family_name"
+        },
+        {
+          "type": "text",
+          "name": "email"
+        },
+        {
+          "type": "text",
+          "name": "password"
+        },
+        {
+          "type": "datetime",
+          "name": "date_enrolled"
+        },
+        {
+          "type": "text",
+          "name": "signup_code"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}

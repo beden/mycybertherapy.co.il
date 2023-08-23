@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "diary_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "first tell, everyone"
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "diary",
+                "column": "title"
+              },
+              {
+                "table": "diary",
+                "column": "diary_date"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "diary"
+            },
+            "primary": "diary_id",
+            "joins": [],
+            "sub": {
+              "attedees": {
+                "type": "select",
+                "table": {
+                  "name": "diary_attedees",
+                  "alias": "attedees"
+                },
+                "key": "diary_id",
+                "columns": [
+                  {
+                    "table": "users",
+                    "column": "first_name"
+                  },
+                  {
+                    "table": "users",
+                    "column": "family_name"
+                  },
+                  {
+                    "table": "users",
+                    "column": "email"
+                  }
+                ],
+                "params": [],
+                "primary": "attend_id",
+                "joins": [
+                  {
+                    "table": "users",
+                    "column": "*",
+                    "type": "LEFT",
+                    "clauses": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "table": "users",
+                          "column": "id_users",
+                          "operator": "equal",
+                          "operation": "=",
+                          "value": {
+                            "table": "attedees",
+                            "column": "id_user"
+                          }
+                        }
+                      ]
+                    },
+                    "primary": "id_users"
+                  }
+                ],
+                "query": "select `users`.`first_name`, `users`.`family_name`, `users`.`email` from `diary_attedees` as `attedees` left join `users` on `users`.`id_users` = `attedees`.`id_user`"
+              }
+            },
+            "query": "select `title`, `diary_date` from `diary`"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "title"
+          },
+          {
+            "type": "datetime",
+            "name": "diary_date"
+          },
+          {
+            "name": "attedees",
+            "type": "array",
+            "sub": [
+              {
+                "type": "text",
+                "name": "first_name"
+              },
+              {
+                "type": "text",
+                "name": "family_name"
+              },
+              {
+                "type": "text",
+                "name": "email"
+              }
+            ]
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "f",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "key": "g_cclist"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "text"
+      },
+      {
+        "name": "repeat",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": "{{query.attedees}}",
+          "outputFields": [],
+          "exec": {
+            "steps": {
+              "name": "",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "key": "g_cclist",
+                "value": "{{g_cclist+email+';'}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          },
+          {
+            "name": "first_name",
+            "type": "text"
+          },
+          {
+            "name": "family_name",
+            "type": "text"
+          },
+          {
+            "name": "email",
+            "type": "text"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "cclister",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "key": "g_cclist",
+          "value": "{{g_cclist+$_ENV.adminemail}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "",
+        "module": "mail",
+        "action": "send",
+        "options": {
+          "instance": "smtp",
+          "fromName": "MyCybertherapy",
+          "fromEmail": "{{$_ENV.adminsender}}",
+          "toName": " Meeting Participant",
+          "toEmail": "{{query.attedees[0].email}}",
+          "body": "The Meeting \"{{query.title}}\" at {{query.diary_date.formatDate('HH:mm', false)}} on&nbsp;{{query.diary_date.formatDate('dd/MM/yyyy', false)}} has been cancelled. <br>\nIf necessary {{$_ENV.consultant}} will contact you to reschedule the meeting.",
+          "subject": "Meeting Cancellation",
+          "recipientType": "extended",
+          "bcc": "{{g_cclist}}",
+          "contentType": "html"
+        },
+        "output": true
+      },
+      {
+        "name": "delete",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "diary",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "diary_id",
+                  "field": "diary_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.diary_id}}",
+                  "data": {
+                    "column": "diary_id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "diary_id",
+            "query": "delete from `diary` where `diary_id` = ?",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.diary_id}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

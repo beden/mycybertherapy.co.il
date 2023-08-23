@@ -7,9 +7,6 @@
     "connection": {
       "filename": "/db/db_dev.sqlite3"
     },
-    "meta": {}
-  },
-  "actionFilePath": "file:///C:/mcbt_h/app/modules/connections/db.json",
-  "serverType": "node",
-  "fileName": "db.json"
+    "tz": "utc"
+  }
 }

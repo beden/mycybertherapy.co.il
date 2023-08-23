@@ -18,6 +18,18 @@
       {
         "type": "text",
         "name": "BaseURL"
+      },
+      {
+        "type": "text",
+        "name": "adminemail"
+      },
+      {
+        "type": "text",
+        "name": "adminsender"
+      },
+      {
+        "type": "text",
+        "name": "consultant"
       }
     ]
   },

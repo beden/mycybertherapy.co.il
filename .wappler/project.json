@@ -27,8 +27,10 @@
   "targets": [
     {
       "name": "Development",
-      "remoteURL": "http://localhost:3000/",
-      "access": "local"
+      "remoteURL": "http://localhost:3000",
+      "access": "local",
+      "databaseConnectionType": "sqlite",
+      "sqliteDbFile": "/db/db_dev.sqlite3"
     },
     {
       "name": "Production",

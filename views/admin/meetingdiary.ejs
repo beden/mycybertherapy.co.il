@@ -1,34 +1,46 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="meetingdiary" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxBootstrap5Alert:{}}" -->
-<div class="alert" id="alert1" is="dmx-bs5-alert" role="alert">
-    <p>This is a nice alert!</p>
-</div>
-<dmx-serverconnect id="serverconnect2" url="/api/diary/setup_apointment" dmx-on:success="modaladd.hide();browser_global.notifies_global.success()" dmx-on:error="browser_global.notifies_global.danger()" dmx-on:invalid="browser_global.notifies_global.danger();browser_global.notifies_global.warning()"></dmx-serverconnect>
-<div class="modal" id="modaladd" is="dmx-bs5-modal" tabindex="-1">
-    <div class="modal-dialog" role="document">
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="meetingdiary" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxBootstrap5Alert:{},dmxStateManagement:{},dmxDatePicker:{},dmxFormatter:{},dmxBootbox5:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5Tooltips:{},dmxBootstrap5Popovers:{},dmxAutocomplete:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
+<dmx-session-manager id="session1"></dmx-session-manager>
+<dmx-serverconnect id="conn_webinars" url="/api/admin/diary/all_webinars"></dmx-serverconnect>
+<dmx-serverconnect id="conn_consultations" url="/api/admin/diary/all_consultations"></dmx-serverconnect>
+<dmx-serverconnect id="conn_booked" url="/api/admin/diary/all_booked"></dmx-serverconnect>
+<dmx-serverconnect id="conn_meetingtypes" url="/api/admin/diary/get_meeting_types"></dmx-serverconnect>
+<dmx-serverconnect id="conn_entry_by_id" url="/api/admin/diary/get_diary_event_by_id" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="conn_users" url="/api/admin/users/all_users" dmx-param:filter="modaledit.inp_filter.value"></dmx-serverconnect>
+<div class="modal" id="modaladd" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="form_add.reset()">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-primary fw-lighter">Set Calendar&nbsp;</h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title fw-lighter text-light">Schedule Event</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="mib_form" method="post">
-                    <div class="row">
-                        <input id="title" name="title" type="text" class="form-control" placeholder="Kind of Gig">
+                <form id="form_add" is="dmx-serverconnect-form" method="post" action="/api/admin/diary/add_diary_event" dmx-on:success="form_add.reset();modaladd.hide();notifies_global.success('Event Added');browser_global.goto('/admin/meetingdiary');conn_webinars.load({});conn_consultations.load({});conn_booked.load({})">
+                    <div class="form-group mb-3">
+                        <label for="in_title" class="form-label">Meeting Title</label>
+                        <input type="text" class="form-control" id="in_title" name="title" aria-describedby="input1_help" placeholder="Meeting Title">
+                        <small id="input1_help" class="form-text text-muted">&nbsp;</small>
                     </div>
-                    <div class="row">
-                        <input id="meeting_id" name="meeting_id " type="text" class="form-control" placeholder="meeting_id">
+                    <div class="form-group mb-3">
+                        <label for="in_title" class="form-label">Meeting Date&nbsp;</label>
+                        <input id="in_timedate" name="diary_date" type="text" class="form-control" dmx-bind:value="session1.data.sDiaryDate+' 13:00'" is="dmx-date-picker" format="DD/MM/YYYY">
+                        <small id="input1_help2" class="form-text text-muted">&nbsp;&nbsp;</small>
                     </div>
-                    <div class="row">
-                        <input id="type" name="type" type="text" class="form-control" placeholder="Individual or Seminar">
+                    <div class="form-group mb-3">
+                        <label for="in_title" class="form-label">Meeting Time</label>
+                        <input id="in_time" name="diary_time" type="time" class="form-control" value="13:00">
+                        <small id="input1_help3" class="form-text text-muted">&nbsp;&nbsp;</small>
                     </div>
-                    <div class="row">
-                        <input id="meetingwhen" name="meetingwhen" type="hidden" class="form-control" dmx-bind:value="calendar1.currentStart">
+                    <div class="form-group mb-3">
+                        <label for="in_mt_id" class="form-label">Meeting Type</label>
+                        <select id="in_mt_id" class="form-select" name="mt_id" dmx-bind:options="conn_meetingtypes.data.query" optiontext="meetingtype" optionvalue="mt_id">
+                        </select>
+                        <small id="select1Help" class="form-text text-muted">&nbsp;</small>
                     </div>
-                    <div class="row">
-                        <input id="type" name="type" type="text" class="form-control">
-                    </div>
-                    <button id="btn1" class="btn btn-lg text-primary fw-lighter active" type="submit">Press To Set&nbsp;</button>
+                    <button id="btn1" class="btn btn-primary" type="submit">Add to Diary</button>
+
+
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -36,7 +48,93 @@
         </div>
     </div>
 </div>
-<dmx-serverconnect id="serverconnect1" url="/api/diary/get_appointments"></dmx-serverconnect>
+<div class="modal" id="modaledit" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="form_edit.reset()">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title fw-lighter text-light">Edit Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form_edit" is="dmx-serverconnect-form" method="post" action="/api/admin/diary/edit_event" dmx-on:success="browser_global.notifies_global.success('Added');conn_webinars.load({});conn_consultations.load({});conn_booked.load({});form_edit.reset();modaledit.hide();browser_global.goto('/admin/meetingdiary')">
+                    <input id="inp_diary_id" name="diary_id" type="hidden" class="form-control" dmx-bind:value="conn_entry_by_id.data.query.diary_id">
+                    <div class="form-group mb-3">
+                        <label for="in_title1" class="form-label">Meeting Title</label>
+                        <input type="text" class="form-control" id="in_title1" name="title" aria-describedby="input1_help" placeholder="Meeting Title" dmx-bind:value="conn_entry_by_id.data.query.title">
+                        <small id="input1_help1" class="form-text text-muted">&nbsp;</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="in_title1" class="form-label">Meeting Date and Time</label>
+                        <input id="in_timedate1" name="diary_date" type="text" class="form-control" is="dmx-date-picker" format="DD/MM/YYYY HH:mm" timepicker="" use24hours="true" dmx-bind:value="conn_entry_by_id.data.query.diary_date">
+                        <small id="input1_help1a" class="form-text text-muted">&nbsp;&nbsp;</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="in_mt_id1" class="form-label">Meeting Type</label>
+                        <select id="in_mt_id1" class="form-select" name="mt_id" dmx-bind:options="conn_meetingtypes.data.query" optiontext="meetingtype" optionvalue="mt_id" dmx-bind:value="conn_entry_by_id.data.query.mt_id">
+                        </select>
+                        <small id="select1Help1" class="form-text text-muted">&nbsp;</small>
+                    </div>
+                    <button id="btn2" class="btn btn-primary btn-sm" type="submit" dmx-bs-tooltip="'Save Appointent Details'" data-bs-trigger="hover"><i class="far fa-save fa-2x"></i></button>
+
+
+                </form>
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h2>Attendees</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group md-3"> <label for="inp_filter" class="form-label">Search</label>
+                                <input type="text" class="form-control" id="inp_filter" name="filter" aria-describedby="input1_help" placeholder="Search term (searches name or email address)">
+                            </div>
+                            <form id="form_add_user" class="d-flex" is="dmx-serverconnect-form" method="post" action="/api/admin/users/add_to_event" dmx-on:success="notifies_global.success('Added');conn_consultations.load({});conn_booked.load({});conn_meetingtypes.load({});conn_entry_by_id.load({diary_id: conn_entry_by_id.data.query.diary_id})">
+                                <input id="input_diary_id" name="diary_id" type="hidden" class="form-control" dmx-bind:value="conn_entry_by_id.data.query.diary_id">
+                                <select id="select1" class="form-select" name="user_id" dmx-bind:options="conn_users.data.query" optiontext="first_name+' '+family_name+' '+email" optionvalue="id_users">
+                                </select><button id="btn5_submit" type="submit" class="btn btn-primary btn-sm" dmx-bs-tooltip="'Add to Diary'" data-bs-trigger="hover"><i class="far fa-calendar-plus"></i></button>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>First name</th>
+                                            <th>Family name</th>
+                                            <th>Email</th>
+                                            <th scope="row">&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="conn_entry_by_id.data.query.attedees" id="tableRepeat1">
+                                        <tr>
+                                            <td dmx-text="first_name"></td>
+                                            <td dmx-text="family_name"></td>
+                                            <td dmx-text="email"></td>
+                                            <td>
+                                                <button id="btn4" class="btn btn-danger btn-sm w-100" dmx-on:click="run([{comment:{msg:'delete attendee'}},{'bootbox.confirm':{message:'Remove Attendee from Meeting',title:'Remove Attendee',buttons:{confirm:{label:'Remove',className:'btn-danger'},cancel:{label:'Cancel',className:'btn-secondary'}},then:{steps:[{comment:{msg:'do it'}},{serverConnect:{url:'/api/admin/diary/remove_attendee',site:'mycy.co.il',params:{attend_id:`attend_id`},name:'sc',outputType:'object'}},{run:{action:`notifies_global.success(\'Removed\')`,outputType:'text'}},{run:{action:`conn_entry_by_id.load({diary_id: conn_entry_by_id.data.query.diary_id})`,outputType:'text'}}]},name:'Remove'}}])" dmx-bs-tooltip="'Remiove from Meeting'" data-bs-trigger="hover"><i class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary ms-auto me-auto" data-bs-dismiss="modal" id="closer">Close</button><button id="btn3" class="btn btn-danger ms-auto me-auto" dmx-on:click="run([{comment:{msg:'delete diary entry'}},{'bootbox.confirm':{message:'Delete diary entry and all attendees',title:'Delete',buttons:{confirm:{label:'Delete',className:'btn-danger'},cancel:{label:'Cancel',className:'btn-secondary'}},centerVertical:true,then:{steps:[{comment:{msg:'aretg'}},{serverConnect:{url:'/api/admin/diary/delete_diary_entry',site:'mycy.co.il',params:{diary_id:`conn_entry_by_id.data.query.diary_id`},name:'sc',outputType:'object'}},{run:{action:`notifies_global.success(\'Deleted\');browser_global.goto(\'/admin/meetingdiary\');modaledit.hide()`,outputType:'text'}}]},name:'delete'}}])" dmx-bs-tooltip="'Remove meeting and notify any participants of its removal'" data-bs-trigger="hover">Delete Diary Entry</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <meta name="ac:route" content="/admin/meetingdiary">
 <div class="container">
     <div class="row">
@@ -45,14 +143,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-3"></div>
         <div class="col">
-            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek,dayGridDay" hide-non-current-dates="true" no-event-overlap="true" no-fixed-week-count="true" selectable="true" editable="true" now-indicator="true" locale="he" aspect-ratio="2.05" dmx-on:dateclick="run({run:{action:`modaladd.show()`,outputType:'text'}})">
-                <dmx-calendar-source id="one_on_many" dmx-bind:events="serverconnect1.data.query_appointments" event-id="conference_id" event-title="title" event-start="meetingwhen" color="rgba(212, 99, 42, 0.6)" background-color="#d48282" border-color="#290c0c" text-color="#426bcc" dmx-show=""></dmx-calendar-source>
-                <dmx-calendar-source id="one_on_one" color="#f26c6c" background-color="#d19292" border-color="#f03636" text-color="#426bcc" editable="true" dmx-bind:events="serverconnect1.data.query_appointments" event-id="conference_id" event-title="title" event-start="meetingwhen">
-                </dmx-calendar-source>
+            <p class="bg-danger text-center text-light">Booked</p>
+        </div>
+        <div class="col">
+            <p class="bg-primary text-center text-light">Webinars</p>
+        </div>
+        <div class="col">
+            <p class="bg-success text-center text-light">Consultations</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek" hide-non-current-dates="true" no-event-overlap="true" no-fixed-week-count="true" now-indicator="true" locale="he" dmx-on:dateclick="modaladd.show();session1.set('sDiaryDate',$event.date)" dmx-on:eventclick="run([{run:{action:`conn_entry_by_id.load({diary_id: $event.event.id})`,outputType:'text'}},{comment:{msg:'Paise to complete'}},{wait:{delay:150}},{run:{action:`modaledit.show()`,outputType:'text'}}])" event-order="" height="100" view="dayGridMonth" aspect-ratio="1.7">
+                <dmx-calendar-source id="diaryDB_consult" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" dmx-bind:events="conn_consultations.data.query" color="#198754" event-start="diary_date.toISODate()"></dmx-calendar-source>
+                <dmx-calendar-source id="diaryDB_webinar" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" event-start="diary_date.toISODate()" dmx-bind:events="conn_webinars.data.query" color="#0d6efd"></dmx-calendar-source>
+                <dmx-calendar-source id="diaryDB_booked" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" event-start="diary_date.toISODate()" dmx-bind:events="conn_booked.data.query" color="#dc3545"></dmx-calendar-source>
             </dmx-calendar>
         </div>
-        <div class="col-3"></div>
     </div>
+
 </div>

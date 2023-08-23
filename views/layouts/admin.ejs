@@ -11,6 +11,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="/bootstrap/5/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
   <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
   <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
   <link rel="stylesheet" href="/dmxAppConnect/dmxBootstrap5TableGenerator/dmxBootstrap5TableGenerator.css" />
@@ -30,11 +32,24 @@
   <script src="/dmxAppConnect/dmxCalendar/dmxCalendar.js" defer></script>
   <script src="https://unpkg.com/@fullcalendar/google-calendar@4.4.2/main.min.js" defer></script>
   <script src="/dmxAppConnect/dmxBootstrap5Alert/dmxBootstrap5Alert.js" defer></script>
+  <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxDatePicker/daterangepicker.min.css" />
+  <script src="/dmxAppConnect/dmxDatePicker/daterangepicker.min.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxDatePicker/dmxDatePicker.css" />
+  <script src="/dmxAppConnect/dmxDatePicker/dmxDatePicker.js" defer></script>
+
+
+  <link rel="stylesheet" href="https://unpkg.com/@fullcalendar/daygrid@4.4.2/main.min.css" />
+
+  <script src="/dmxAppConnect/dmxBootstrap5Popovers/dmxBootstrap5Popovers.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxAutocomplete/dmxAutocomplete.css" />
+  <script src="/dmxAppConnect/dmxAutocomplete/dmxAutocomplete.js" defer></script>
 </head>
 
 <body is="dmx-app" id="admin">
+  <dmx-notifications id="notifies_global"></dmx-notifications>
   <div is="dmx-browser" id="browser_global">
-    <dmx-notifications id="notifies_global"></dmx-notifications>
+
   </div>
   <div class="container">
     <div class="row">
@@ -51,8 +66,10 @@
                 <a class="nav-item nav-link" href="/admin/userlist">Users</a>
                 <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdown1" role="button" aria-haspopup="true" aria-expanded="false">Meetings</a>
                   <div class="dropdown-menu" aria-labelledby="dropdown1">
-                    <a class="dropdown-item" href="/open-meeting">Meeting List</a>
-                    <a class="dropdown-item" href="/admin/meetingdiary" target="_blank">Meeting Diary</a>
+                    <a class="dropdown-item" href="/admin/meetingdiary">Diary</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item disabled" href="/open-meeting">Meeting List</a>
+                    <a class="dropdown-item disabled" href="/admin/meetingdiary" target="_blank">Meeting Diary</a>
                   </div>
                 </div>
 

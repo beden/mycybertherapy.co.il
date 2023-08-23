@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/meetingdiary.ejs",
+      "linkedForm": "form_edit"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "title",
+        "name": "title"
+      },
+      {
+        "type": "text",
+        "fieldName": "diary_date",
+        "name": "diary_date"
+      },
+      {
+        "type": "text",
+        "fieldName": "mt_id",
+        "name": "mt_id"
+      },
+      {
+        "type": "text",
+        "fieldName": "diary_id",
+        "name": "diary_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "diary",
+              "column": "diary_date",
+              "type": "datetime",
+              "value": "{{$_POST.diary_date}}"
+            },
+            {
+              "table": "diary",
+              "column": "title",
+              "type": "text",
+              "value": "{{$_POST.title}}"
+            },
+            {
+              "table": "diary",
+              "column": "mt_id",
+              "type": "text",
+              "value": "{{$_POST.mt_id}}"
+            }
+          ],
+          "table": "diary",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "diary_id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.diary_id}}",
+                "data": {
+                  "column": "diary_id"
+                },
+                "operation": "="
+              }
+            ]
+          },
+          "returning": "diary_id",
+          "query": "update `diary` set `diary_date` = ?, `title` = ?, `mt_id` = ? where `diary_id` = ? returning `diary_id`",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.diary_date}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.title}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.mt_id}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P4",
+              "value": "{{$_POST.diary_id}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

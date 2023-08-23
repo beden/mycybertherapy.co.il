@@ -4,6 +4,10 @@
   "env": {
     "OrganizationID": "ca3bedda-f846-47f3-b973-cbb005944d0b",
     "APIKey": "ca3efff2ec806d255f5d",
-    "BaseURL": "https://api.dyte.io/v2"
+    "BaseURL": "https://api.dyte.io/v2",
+    "timeoffset": "2",
+    "adminemail": "brian@briananddebbi.com",
+    "adminsender": "noreply@mycybertherapy.co.il",
+    "consultant": "Dr Michael Benjamin"
   }
 }

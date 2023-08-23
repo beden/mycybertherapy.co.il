@@ -13,7 +13,7 @@
   },
   "exec": {
     "steps": {
-      "name": "query_appointments",
+      "name": "query",
       "module": "dbconnector",
       "action": "select",
       "options": {
@@ -22,60 +22,40 @@
           "type": "select",
           "columns": [
             {
-              "table": "conference",
-              "column": "conference_id"
-            },
-            {
-              "table": "conference",
-              "column": "meeting_id"
-            },
-            {
-              "table": "conference",
-              "column": "meetingwhen"
-            },
-            {
-              "table": "conference",
-              "column": "title"
-            },
-            {
-              "table": "conference",
-              "column": "type"
+              "table": "diary",
+              "column": "*"
             }
           ],
           "params": [],
           "table": {
-            "name": "conference"
+            "name": "diary"
           },
-          "primary": "conference_id",
+          "primary": "diary_id",
           "joins": [],
           "sub": {
-            "participants": {
+            "attedees": {
               "type": "select",
               "table": {
-                "name": "conference_participants",
-                "alias": "participants"
+                "name": "diary_attedees",
+                "alias": "attedees"
               },
-              "key": "conference_id",
+              "key": "diary_id",
               "columns": [
                 {
-                  "table": "participants",
-                  "column": "participant_id"
+                  "table": "users",
+                  "column": "first_name"
                 },
                 {
-                  "table": "participants",
-                  "column": "user_id"
+                  "table": "users",
+                  "column": "family_name"
                 },
                 {
-                  "table": "participants",
-                  "column": "role_id"
-                },
-                {
-                  "table": "participants",
-                  "column": "p_id"
+                  "table": "users",
+                  "column": "email"
                 }
               ],
               "params": [],
-              "primary": "p_id",
+              "primary": "attend_id",
               "joins": [
                 {
                   "table": "users",
@@ -90,8 +70,8 @@
                         "operator": "equal",
                         "operation": "=",
                         "value": {
-                          "table": "participants",
-                          "column": "user_id"
+                          "table": "attedees",
+                          "column": "id_user"
                         }
                       }
                     ]
@@ -99,25 +79,28 @@
                   "primary": "id_users"
                 }
               ],
-              "query": "select `participants`.`participant_id`, `participants`.`user_id`, `participants`.`role_id`, `participants`.`p_id` from `conference_participants` as `participants` left join `users` on `users`.`id_users` = `participants`.`user_id`"
+              "query": "select `users`.`first_name`, `users`.`family_name`, `users`.`email` from `diary_attedees` as `attedees` left join `users` on `users`.`id_users` = `attedees`.`id_user`"
             }
           },
-          "query": "select `conference_id`, `meeting_id`, `meetingwhen`, `title`, `type` from `conference`"
+          "query": "select * from `diary` order by `diary_date` ASC",
+          "orders": [
+            {
+              "table": "diary",
+              "column": "diary_date",
+              "direction": "ASC"
+            }
+          ]
         }
       },
       "output": true,
       "meta": [
         {
           "type": "number",
-          "name": "conference_id"
-        },
-        {
-          "type": "text",
-          "name": "meeting_id"
+          "name": "diary_id"
         },
         {
           "type": "datetime",
-          "name": "meetingwhen"
+          "name": "diary_date"
         },
         {
           "type": "text",
@@ -125,27 +108,23 @@
         },
         {
           "type": "text",
-          "name": "type"
+          "name": "mt_id"
         },
         {
-          "name": "participants",
+          "name": "attedees",
           "type": "array",
           "sub": [
             {
               "type": "text",
-              "name": "participant_id"
+              "name": "first_name"
             },
             {
               "type": "text",
-              "name": "user_id"
+              "name": "family_name"
             },
             {
               "type": "text",
-              "name": "role_id"
-            },
-            {
-              "type": "number",
-              "name": "p_id"
+              "name": "email"
             }
           ]
         }

@@ -2,7 +2,7 @@
 exports.up = function(knex) {
   return knex.schema
     .table('conference_participants', async function (table) {
-      table.renameColumn('role_id', 'role');
+      table.dropColumn('role');
     })
 
 };
@@ -10,6 +10,6 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema
     .table('conference_participants', async function (table) {
-      table.renameColumn('role', 'role_id');
+      table.string('role', 255);
     })
 };

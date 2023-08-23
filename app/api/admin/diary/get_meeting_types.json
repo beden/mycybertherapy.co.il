@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "meetingtypes",
+              "column": "*"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "meetingtypes"
+          },
+          "primary": "mt_id",
+          "joins": [],
+          "query": "select * from `meetingtypes`"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "mt_id"
+        },
+        {
+          "type": "text",
+          "name": "meetingtype"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}

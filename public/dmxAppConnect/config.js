@@ -22,5 +22,13 @@ dmx.config({
         "name": "showmodal"
       }
     ]
+  },
+  "meetingdiary": {
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "sDiaryDate"
+      }
+    ]
   }
 });

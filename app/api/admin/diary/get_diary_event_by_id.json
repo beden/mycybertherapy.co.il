@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "diary_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "diary",
+              "column": "*"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.diary_id}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "diary"
+          },
+          "primary": "diary_id",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "diary.diary_id",
+                "field": "diary.diary_id",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.diary_id}}",
+                "data": {
+                  "table": "diary",
+                  "column": "diary_id",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "increments",
+                    "primary": true,
+                    "unique": false,
+                    "nullable": false,
+                    "name": "diary_id"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select * from `diary` where `diary`.`diary_id` = ?",
+          "sub": {
+            "attedees": {
+              "type": "select",
+              "table": {
+                "name": "diary_attedees",
+                "alias": "attedees"
+              },
+              "key": "diary_id",
+              "columns": [
+                {
+                  "table": "users",
+                  "column": "first_name"
+                },
+                {
+                  "table": "users",
+                  "column": "family_name"
+                },
+                {
+                  "table": "users",
+                  "column": "email"
+                },
+                {
+                  "table": "attedees",
+                  "column": "id_user"
+                },
+                {
+                  "table": "attedees",
+                  "column": "attend_id"
+                }
+              ],
+              "params": [],
+              "primary": "attend_id",
+              "joins": [
+                {
+                  "table": "users",
+                  "column": "*",
+                  "type": "LEFT",
+                  "clauses": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "table": "users",
+                        "column": "id_users",
+                        "operator": "equal",
+                        "operation": "=",
+                        "value": {
+                          "table": "attedees",
+                          "column": "id_user"
+                        }
+                      }
+                    ]
+                  },
+                  "primary": "id_users"
+                }
+              ],
+              "orders": [
+                {
+                  "table": "users",
+                  "column": "date_enrolled",
+                  "direction": "ASC",
+                  "recid": 1
+                }
+              ],
+              "query": "select `users`.`first_name`, `users`.`family_name`, `users`.`email`, `attedees`.`id_user`, `attedees`.`attend_id` from `diary_attedees` as `attedees` left join `users` on `users`.`id_users` = `attedees`.`id_user` order by `users`.`date_enrolled` ASC"
+            }
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "diary_id"
+        },
+        {
+          "type": "datetime",
+          "name": "diary_date"
+        },
+        {
+          "type": "text",
+          "name": "title"
+        },
+        {
+          "type": "text",
+          "name": "mt_id"
+        },
+        {
+          "type": "text",
+          "name": "confuuid"
+        },
+        {
+          "type": "time",
+          "name": "diary_time"
+        },
+        {
+          "name": "attedees",
+          "type": "array",
+          "sub": [
+            {
+              "type": "text",
+              "name": "first_name"
+            },
+            {
+              "type": "text",
+              "name": "family_name"
+            },
+            {
+              "type": "text",
+              "name": "email"
+            },
+            {
+              "type": "text",
+              "name": "id_user"
+            },
+            {
+              "type": "number",
+              "name": "attend_id"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
+  }
+}

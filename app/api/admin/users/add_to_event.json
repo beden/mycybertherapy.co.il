@@ -1,0 +1,263 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/meetingdiary.ejs",
+      "linkedForm": "form_add_user"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "diary_id",
+        "name": "diary_id"
+      },
+      {
+        "type": "text",
+        "fieldName": "user_id",
+        "name": "user_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "query1",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "diary",
+                "column": "*"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.diary_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "diary"
+            },
+            "primary": "diary_id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "diary.diary_id",
+                  "field": "diary.diary_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.diary_id}}",
+                  "data": {
+                    "table": "diary",
+                    "column": "diary_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "diary_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select * from `diary` where `diary`.`diary_id` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "diary_id"
+          },
+          {
+            "type": "datetime",
+            "name": "diary_date"
+          },
+          {
+            "type": "text",
+            "name": "title"
+          },
+          {
+            "type": "text",
+            "name": "mt_id"
+          },
+          {
+            "type": "text",
+            "name": "confuuid"
+          },
+          {
+            "type": "time",
+            "name": "diary_time"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "users",
+                "column": "first_name"
+              },
+              {
+                "table": "users",
+                "column": "family_name"
+              },
+              {
+                "table": "users",
+                "column": "email"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.user_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "users"
+            },
+            "primary": "id_users",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "users.id_users",
+                  "field": "users.id_users",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.user_id}}",
+                  "data": {
+                    "table": "users",
+                    "column": "id_users",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "id_users"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `first_name`, `family_name`, `email` from `users` where `users`.`id_users` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "first_name"
+          },
+          {
+            "type": "text",
+            "name": "family_name"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "diary_attedees",
+                "column": "id_user",
+                "type": "text",
+                "value": "{{$_POST.user_id}}"
+              },
+              {
+                "table": "diary_attedees",
+                "column": "diary_id",
+                "type": "number",
+                "value": "{{$_POST.diary_id}}"
+              }
+            ],
+            "table": "diary_attedees",
+            "returning": "attend_id",
+            "query": "insert into `diary_attedees` (`diary_id`, `id_user`) values (?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.user_id}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.diary_id}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "output": true
+      },
+      {
+        "name": "",
+        "module": "mail",
+        "action": "send",
+        "options": {
+          "instance": "smtp",
+          "subject": "You have been booked into an event",
+          "fromName": "Mycybertherapy.co.uk",
+          "fromEmail": "noreply@mycybertherapy.co.il",
+          "toName": "{{query.first_name+' '+query.family_name}}",
+          "toEmail": "{{query.email}}",
+          "body": "<p>You have been added to an appointment \"{{query1.title}}\"&nbsp; at {{query1.diary_date.formatDate('HH:mm', false)}} on {{query1.diary_date.formatDate('dd/MM/yyyy', false)}} local time.\n\nThe meeting will not be accessible before that time, and date and you will receive an email when the meeting goes live with your meeting access code.\n\nShould you be unable to attend please contact me as soon as possible soi the appointment can be reallocated.\nDr Michael Benjamin</p>",
+          "contentType": "html"
+        },
+        "output": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "diary",
+              "column": "*"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "diary"
+          },
+          "primary": "diary_id",
+          "joins": [],
+          "sub": {
+            "attedees": {
+              "type": "select",
+              "table": {
+                "name": "diary_attedees",
+                "alias": "attedees"
+              },
+              "key": "diary_id",
+              "columns": [
+                {
+                  "table": "users",
+                  "column": "first_name"
+                },
+                {
+                  "table": "users",
+                  "column": "family_name"
+                },
+                {
+                  "table": "users",
+                  "column": "email"
+                }
+              ],
+              "params": [],
+              "primary": "attend_id",
+              "joins": [
+                {
+                  "table": "users",
+                  "column": "*",
+                  "type": "LEFT",
+                  "clauses": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "table": "users",
+                        "column": "id_users",
+                        "operator": "equal",
+                        "operation": "=",
+                        "value": {
+                          "table": "attedees",
+                          "column": "id_user"
+                        }
+                      }
+                    ]
+                  },
+                  "primary": "id_users"
+                }
+              ],
+              "query": "select `users`.`first_name`, `users`.`family_name`, `users`.`email` from `diary_attedees` as `attedees` left join `users` on `users`.`id_users` = `attedees`.`id_user`"
+            }
+          },
+          "query": "select * from `diary` where `diary`.`mt_id` = ? order by `diary_date` ASC",
+          "orders": [
+            {
+              "table": "diary",
+              "column": "diary_date",
+              "direction": "ASC",
+              "recid": 1
+            }
+          ],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "diary.mt_id",
+                "field": "diary.mt_id",
+                "type": "string",
+                "operator": "equal",
+                "value": "2",
+                "data": {
+                  "table": "diary",
+                  "column": "mt_id",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "mt_id"
+                  }
+                },
+                "operation": "=",
+                "table": "diary"
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          }
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "diary_id"
+        },
+        {
+          "type": "datetime",
+          "name": "diary_date"
+        },
+        {
+          "type": "text",
+          "name": "title"
+        },
+        {
+          "type": "text",
+          "name": "mt_id"
+        },
+        {
+          "type": "text",
+          "name": "confuuid"
+        },
+        {
+          "name": "attedees",
+          "type": "array",
+          "sub": [
+            {
+              "type": "text",
+              "name": "first_name"
+            },
+            {
+              "type": "text",
+              "name": "family_name"
+            },
+            {
+              "type": "text",
+              "name": "email"
+            }
+          ]
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}
