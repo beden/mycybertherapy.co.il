@@ -1,0 +1,53 @@
+<!-- Wappler include head-page="layouts/main" is="dmx-app" id="meet" appConnect="local" fontawesome_5="cdn" bootstrap5="cdn" components="{dmxBootstrap5Modal:{},dmxFormatter:{}}" -->
+
+<dmx-serverconnect id="conn_meeting" url="/api/register/validate_meeting" dmx-param:attuuid="query.attuuid" dmx-param:confuuid="query.confuuid" dmx-param:user_id="query.user_id"></dmx-serverconnect>
+
+
+
+<div id="conditional_invalid" is="dmx-if" dmx-bind:condition="conn_meeting.data.query.isEmpty()">
+    <div class="modal" id="modal-error" is="dmx-bs5-modal" tabindex="-1" role="dialog" show="true" nobackdrop="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="text-center text-danger"><i class="fas fa-times-circle fa-6x"></i></p>
+                    <h4 class="text-center fw-light">Invalid Meeting Link!</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<meta name="ac:route" content="/meet/:confuuid/:attuuid/:user_id">
+<div id="conditional_valid" is="dmx-if" dmx-bind:condition="conn_meeting.data.query&amp;&amp;conn_meeting.data.query1">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Meeting</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p dmx-text="conn_meeting.data.query.title">Meeting</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="conditional_notopen" is="dmx-if" dmx-bind:condition="conn_meeting.data.query1.isEmpty()&amp;&amp;!conn_meeting.data.query.isEmpty()">
+    <div class="modal" id="modalnotopen" is="dmx-bs5-modal" tabindex="-1" role="dialog" show="true" nobackdrop="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="text-center text-danger"><i class="fas fa-hand-paper fa-10x"></i></p>
+                    <h4 class="text-center fw-light">Meeting not yet Open</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

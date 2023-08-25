@@ -63,17 +63,11 @@
               "column": "confuuid",
               "type": "text",
               "value": "{{UUID}}"
-            },
-            {
-              "table": "diary",
-              "column": "diary_time",
-              "type": "time",
-              "value": "{{$_POST.diary_time}}"
             }
           ],
           "table": "diary",
           "returning": "diary_id",
-          "query": "insert into `diary` (`confuuid`, `diary_date`, `diary_time`, `mt_id`, `title`) values (?, ?, ?, ?, ?) returning `diary_id`",
+          "query": "insert into `diary` (`confuuid`, `diary_date`, `mt_id`, `title`) values (?, ?, ?, ?) returning `diary_id`",
           "params": [
             {
               "name": ":P1",
@@ -97,12 +91,6 @@
               "name": ":P4",
               "type": "expression",
               "value": "{{UUID}}",
-              "test": ""
-            },
-            {
-              "name": ":P5",
-              "type": "expression",
-              "value": "{{$_POST.diary_time}}",
               "test": ""
             }
           ]

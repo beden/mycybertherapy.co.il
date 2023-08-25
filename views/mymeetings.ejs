@@ -1,0 +1,44 @@
+<!-- Wappler include head-page="layouts/main" is="dmx-app" id="mymeetings" appConnect="local" fontawesome_5="cdn" bootstrap5="cdn" components="{dmxBootstrap5TableGenerator:{},dmxFormatter:{},dmxBootstrap5Tooltips:{}}" -->
+<dmx-datetime id="var1"></dmx-datetime>
+<dmx-serverconnect id="conn_my_meetings" url="/api/register/mymeets"></dmx-serverconnect>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>My Meetings</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Meeting Time &amp; Date</th>
+                            <th>Meeting Title</th>
+                            <th scope="row">Unsubscribe From meeting</th>
+                            <th scope="row">Meeting Link</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="conn_my_meetings.data.query" id="tableRepeat1">
+                        <tr>
+                            <td dmx-text="diary_date.formatDate('HH:mm dd/MM/yyyy')"></td>
+                            <td dmx-text="title"></td>
+                            <td>
+                                <form id="form_unsub" is="dmx-serverconnect-form" method="post" action="/api/register/unsubscribe_from_meeting" dmx-on:success="notifies_global.success('Removed from meeting');conn_my_meetings.load({})">
+                                    <input id="text1" name="diary_id" type="hidden" class="form-control" dmx-bind:value="diary_id">
+                                    <button id="btn1" class="btn btn-sm btn-outline-danger" dmx-bs-tooltip="'Remove from Meeting'" data-bs-trigger="hover" type="submit"><i class="fas fa-user-minus fa-2x"></i></button>
+                                </form>
+
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-success" dmx-bind:href="'/meet/'+confuuid+'/'+attuuid+'/'+id_user"><i class="fas fa-link fa-2x"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<meta name="ac:route" content="/mymeetings">

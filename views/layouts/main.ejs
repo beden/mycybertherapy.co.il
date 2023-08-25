@@ -5,7 +5,7 @@
     <base href="/">
     <script src="/dmxAppConnect/dmxAppConnect.js"></script>
     <meta charset="UTF-8">
-    <title>myCybertherapy</title>
+    <title><%=_('query_seo.description')%></title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
@@ -39,11 +39,15 @@
     <script src="https://unpkg.com/@fullcalendar/google-calendar@4.4.2/main.min.js" defer></script>
     <script src="/dmxAppConnect/dmxVideo/dmxVideo.js" defer></script>
     <script src="/js/dmx-youtube-player.js" defer></script>
+    <script src="/dmxAppConnect/dmxFormatter/dmxFormatter.js" defer></script>
+    <meta name="description" content="<%=_('query_seo.description')%>">
+    <link rel="stylesheet" href="/dmxAppConnect/dmxBootstrap5TableGenerator/dmxBootstrap5TableGenerator.css" />
+    <script src="/dmxAppConnect/dmxBootstrap5Tooltips/dmxBootstrap5Tooltips.js" defer></script>
 </head>
 
 <body is="dmx-app" id="main" title="Online Psychiatry">
     <dmx-cookie-manager id="cookies1"></dmx-cookie-manager>
-    <div class="modal h-auto" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" dmx-hide="cookies1.data.showmodal==1">
+    <div class="modal h-auto" id="modal1" is="dmx-bs5-modal" tabindex="-1" dmx-hide="cookies1.data.showmodal==1" dmx-on:hide-bs-modal="cookies1.set('showmodal',1,{})" nobackdrop="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -69,7 +73,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">לסגור להמשך</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" dmx-on:click="modal1.hide()">לסגור להמשך</button>
                 </div>
             </div>
         </div>
@@ -117,7 +121,8 @@
                                     <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbar1_dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dmx-show="conn_who_am_i.data.current_user_identity&gt;=1">שירותים</a>
                                         <div class="dropdown-menu" aria-labelledby="navbar1_dropdown" dmx-show="conn_who_am_i.data.current_user_identity>=1">
 
-                                            <a class="dropdown-item" href="#">לקבוע פגישה </a>
+                                            <a class="dropdown-item" href="/availability">Availability</a>
+                                            <a class="dropdown-item" href="/mymeetings">My Meetings</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">סמינטאר</a>
                                         </div>
@@ -125,7 +130,7 @@
                                     <a class="nav-item nav-link" href="/login" dmx-show="conn_who_am_i.data.current_user_identity&lt;1">Login</a>
                                     <a class="nav-item nav-link" href="/logout" dmx-show="conn_who_am_i.data.current_user_identity&gt;=1">Logout</a>
                                     <a class="nav-item nav-link" href="/register1" dmx-show="conn_who_am_i.data.current_user_identity&lt;1">Register</a>
-                                    <a class="nav-item nav-link" href="/admin/" dmx-show="conn_who_am_i.data.query_is_admin.id_users&gt;0">Admin</a><a class="nav-item nav-link disabled" href="#">V 1.1.1</a>
+                                    <a class="nav-item nav-link" href="/admin/" dmx-show="conn_who_am_i.data.query_is_admin.id_users&gt;0">Admin</a>
                                 </div>
                             </div>
                         </div>

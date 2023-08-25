@@ -5,6 +5,12 @@ dmx.config({
         "type": "text",
         "name": "user_id"
       }
+    ],
+    "cookies": [
+      {
+        "type": "number",
+        "name": "splash"
+      }
     ]
   },
   "userdata": {
@@ -18,8 +24,28 @@ dmx.config({
   "main": {
     "cookies": [
       {
-        "type": "text",
+        "type": "number",
         "name": "showmodal"
+      }
+    ],
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "splash"
+      }
+    ],
+    "query": [
+      {
+        "type": "text",
+        "name": "attuuid"
+      },
+      {
+        "type": "text",
+        "name": "confuuid"
+      },
+      {
+        "type": "text",
+        "name": "user_id"
       }
     ]
   },

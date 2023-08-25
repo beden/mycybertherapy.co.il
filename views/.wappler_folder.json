@@ -66,5 +66,17 @@
   "calendar.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "availability.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "mymeetings.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "meet.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

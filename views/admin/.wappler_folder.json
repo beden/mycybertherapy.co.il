@@ -18,5 +18,13 @@
   "meetingdiary.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "today.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "adminmeet.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

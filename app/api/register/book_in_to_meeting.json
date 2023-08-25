@@ -1,0 +1,689 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/availability.ejs",
+      "linkedForm": "form_register"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "diary_id",
+        "name": "diary_id"
+      },
+      {
+        "type": "text",
+        "fieldName": "mt_id",
+        "name": "mt_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "check to see if already subscribed to a consultation\n"
+        }
+      },
+      {
+        "name": "query_has_other_appointment",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "diary_attedees",
+                "column": "attend_id"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{current_user_identity}}",
+                "test": ""
+              },
+              {
+                "operator": "greater_or_equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{NOW}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "diary_attedees"
+            },
+            "primary": "attend_id",
+            "joins": [
+              {
+                "table": "diary",
+                "column": "*",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "diary",
+                      "column": "diary_id",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "diary_attedees",
+                        "column": "diary_id"
+                      }
+                    }
+                  ]
+                },
+                "primary": "diary_id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "id": "diary.mt_id",
+                      "field": "diary.mt_id",
+                      "type": "string",
+                      "operator": "equal",
+                      "value": "3",
+                      "data": {
+                        "table": "diary",
+                        "column": "mt_id",
+                        "type": "text",
+                        "columnObj": {
+                          "type": "string",
+                          "maxLength": 255,
+                          "primary": false,
+                          "unique": false,
+                          "nullable": true,
+                          "name": "mt_id"
+                        }
+                      },
+                      "operation": "=",
+                      "table": "diary_attedees"
+                    },
+                    {
+                      "id": "diary_attedees.id_user",
+                      "field": "diary_attedees.id_user",
+                      "type": "string",
+                      "operator": "equal",
+                      "value": "{{current_user_identity}}",
+                      "data": {
+                        "table": "diary_attedees",
+                        "column": "id_user",
+                        "type": "text",
+                        "columnObj": {
+                          "type": "string",
+                          "maxLength": 255,
+                          "primary": false,
+                          "unique": false,
+                          "nullable": true,
+                          "name": "id_user"
+                        }
+                      },
+                      "operation": "=",
+                      "table": "diary_attedees"
+                    },
+                    {
+                      "id": "diary.diary_date",
+                      "field": "diary.diary_date",
+                      "type": "datetime",
+                      "operator": "greater_or_equal",
+                      "value": "{{NOW}}",
+                      "data": {
+                        "table": "diary",
+                        "column": "diary_date",
+                        "type": "datetime",
+                        "columnObj": {
+                          "type": "datetime",
+                          "primary": false,
+                          "unique": false,
+                          "nullable": true,
+                          "name": "diary_date"
+                        }
+                      },
+                      "operation": ">=",
+                      "table": "diary_attedees"
+                    }
+                  ],
+                  "conditional": null,
+                  "table": "diary_attedees",
+                  "id": "diary_attedees.undefined"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `diary_attedees`.`attend_id` from `diary_attedees` left join `diary` on `diary`.`diary_id` = `diary_attedees`.`diary_id` where (`diary`.`mt_id` = ? and `diary_attedees`.`id_user` = ? and `diary`.`diary_date` >= ?)"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "attend_id"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query_has_other_appointment&&$_POST.mt_id!=2}}",
+          "then": {
+            "steps": {
+              "name": "already_has_appt",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 403,
+                "data": "You cannot be booked into more than 1 consultation"
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "options": {
+          "comment": "Get user"
+        }
+      },
+      {
+        "name": "query_user",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "users",
+                "column": "first_name"
+              },
+              {
+                "table": "users",
+                "column": "family_name"
+              },
+              {
+                "table": "users",
+                "column": "email"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{current_user_identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "users"
+            },
+            "primary": "id_users",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "users.id_users",
+                  "field": "users.id_users",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{current_user_identity}}",
+                  "data": {
+                    "table": "users",
+                    "column": "id_users",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "id_users"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `first_name`, `family_name`, `email` from `users` where `users`.`id_users` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "first_name"
+          },
+          {
+            "type": "text",
+            "name": "family_name"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "query_diary",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "diary",
+                "column": "diary_date"
+              },
+              {
+                "table": "diary",
+                "column": "title"
+              },
+              {
+                "table": "diary",
+                "column": "confuuid"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.diary_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "diary"
+            },
+            "primary": "diary_id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "diary.diary_id",
+                  "field": "diary.diary_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.diary_id}}",
+                  "data": {
+                    "table": "diary",
+                    "column": "diary_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "diary_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `diary_date`, `title`, `confuuid` from `diary` where `diary`.`diary_id` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "datetime",
+            "name": "diary_date"
+          },
+          {
+            "type": "text",
+            "name": "title"
+          },
+          {
+            "type": "text",
+            "name": "confuuid"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "diary_attedees",
+                "column": "attend_id"
+              },
+              {
+                "table": "diary",
+                "column": "mt_id"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{current_user_identity}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_POST.diary_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "diary_attedees"
+            },
+            "primary": "attend_id",
+            "joins": [
+              {
+                "table": "diary",
+                "column": "*",
+                "type": "LEFT",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "diary",
+                      "column": "diary_id",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "diary_attedees",
+                        "column": "diary_id"
+                      }
+                    }
+                  ]
+                },
+                "primary": "diary_id"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "diary_attedees.id_user",
+                  "field": "diary_attedees.id_user",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{current_user_identity}}",
+                  "data": {
+                    "table": "diary_attedees",
+                    "column": "id_user",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": 255,
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "id_user"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "diary_attedees.diary_id",
+                  "field": "diary_attedees.diary_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.diary_id}}",
+                  "data": {
+                    "table": "diary_attedees",
+                    "column": "diary_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "references": "diary_id",
+                      "inTable": "diary",
+                      "referenceType": "integer",
+                      "onUpdate": "CASCADE",
+                      "onDelete": "CASCADE",
+                      "name": "diary_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `diary_attedees`.`attend_id`, `diary`.`mt_id` from `diary_attedees` left join `diary` on `diary`.`diary_id` = `diary_attedees`.`diary_id` where `diary_attedees`.`id_user` = ? and `diary_attedees`.`diary_id` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "attend_id"
+          },
+          {
+            "type": "text",
+            "name": "mt_id"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query}}",
+          "then": {
+            "steps": [
+              {
+                "name": "",
+                "options": {
+                  "comment": "already subscribed"
+                }
+              },
+              {
+                "name": "Already_Subscribed",
+                "module": "core",
+                "action": "response",
+                "options": {
+                  "data": "You Are Already Subscribed",
+                  "status": 403
+                }
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "attuuid",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{UUID}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "diary_attedees",
+                "column": "id_user",
+                "type": "text",
+                "value": "{{current_user_identity}}"
+              },
+              {
+                "table": "diary_attedees",
+                "column": "diary_id",
+                "type": "number",
+                "value": "{{$_POST.diary_id}}"
+              },
+              {
+                "table": "diary_attedees",
+                "column": "attuuid",
+                "type": "text",
+                "value": "{{attuuid}}"
+              }
+            ],
+            "table": "diary_attedees",
+            "returning": "attend_id",
+            "query": "insert into `diary_attedees` (`attuuid`, `diary_id`, `id_user`) values (?, ?, ?) returning `attend_id`",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{current_user_identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.diary_id}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{attuuid}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{$_POST.mt_id==1}}",
+          "then": {
+            "steps": {
+              "name": "update",
+              "module": "dbupdater",
+              "action": "update",
+              "options": {
+                "connection": "db",
+                "sql": {
+                  "type": "update",
+                  "values": [
+                    {
+                      "table": "diary",
+                      "column": "mt_id",
+                      "type": "text",
+                      "value": "3"
+                    }
+                  ],
+                  "table": "diary",
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "diary_id",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": "{{$_POST.diary_id}}",
+                        "data": {
+                          "column": "diary_id"
+                        },
+                        "operation": "="
+                      }
+                    ]
+                  },
+                  "returning": "diary_id",
+                  "query": "update `diary` set `mt_id` = ? where `diary_id` = ?",
+                  "params": [
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P1",
+                      "value": "{{$_POST.diary_id}}",
+                      "test": ""
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ]
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "options": {
+          "comment": "now send email"
+        }
+      },
+      {
+        "name": "",
+        "module": "mail",
+        "action": "send",
+        "options": {
+          "instance": "smtp",
+          "subject": "MyCybertherapy Appointment",
+          "fromName": "MyCybertherapy",
+          "fromEmail": "{{$_ENV.adminsender}}",
+          "toName": "{{query_user.first_name+' '+query_user.family_name}}",
+          "toEmail": "{{' '+query_user.email}}",
+          "body": "<p>You have been subscribed to a meeting \"{{query_diary.title}}\" at {{query_diary.diary_date.formatDate('HH:mm', false)}} on {{query_diary.diary_date.formatDate('dd/MM/yyyy', false)}} <br>Your meeting code is https://mycybertherapy.co.il/meet/{{query_diary.confuuid}}/{{attuuid}} </p><p>You will&nbsp; not be able to enter the meeting until&nbsp;{{$_ENV.consultant}} has opened it so wait until the meeting start time.</p>",
+          "contentType": "html",
+          "recipientType": "extended",
+          "bcc": "{{$_ENV.adminemail}}"
+        }
+      }
+    ]
+  }
+}

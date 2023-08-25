@@ -6,6 +6,10 @@
     "client": "sqlite3",
     "connection": {
       "filename": "/db/db_dev.sqlite3"
-    }
-  }
+    },
+    "meta": {}
+  },
+  "actionFilePath": "file:///E:/webs/mycy.co.il/app/modules/connections/db.json",
+  "serverType": "node",
+  "fileName": "db.json"
 }

@@ -242,6 +242,15 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "confuuid": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         },
         "db": {},
@@ -290,6 +299,15 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "token": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         },
         "parent": "conference"
@@ -324,6 +342,15 @@
               "referenceType": "integer",
               "onUpdate": "CASCADE",
               "onDelete": "CASCADE"
+            }
+          },
+          "attuuid": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
             }
           }
         },
@@ -369,13 +396,6 @@
               "primary": false,
               "unique": false,
               "nullable": true
-            },
-            "db_edits": {
-              "useTz": false,
-              "default": ""
-            },
-            "status": {
-              "modified": true
             }
           },
           "title": {
@@ -404,20 +424,60 @@
               "unique": false,
               "nullable": true
             }
-          },
-          "diary_time": {
-            "db": {
-              "type": "time",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
           }
         },
         "db": {},
         "sub": {
           "diary_attedees": "diary_id"
         }
+      },
+      "seo": {
+        "columns": {
+          "seo_id": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "description": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "page": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "head": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {}
       }
     },
     "views": {}

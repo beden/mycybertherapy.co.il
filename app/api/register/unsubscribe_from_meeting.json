@@ -1,0 +1,349 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/mymeetings.ejs",
+      "linkedForm": "form_unsub"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "diary_id",
+        "name": "diary_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "users",
+                "column": "id_users"
+              },
+              {
+                "table": "users",
+                "column": "first_name"
+              },
+              {
+                "table": "users",
+                "column": "family_name"
+              },
+              {
+                "table": "users",
+                "column": "email"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{current_user_identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "users"
+            },
+            "primary": "id_users",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "users.id_users",
+                  "field": "users.id_users",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{current_user_identity}}",
+                  "data": {
+                    "table": "users",
+                    "column": "id_users",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "id_users"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `id_users`, `first_name`, `family_name`, `email` from `users` where `users`.`id_users` = ?"
+          }
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "id_users"
+          },
+          {
+            "type": "text",
+            "name": "first_name"
+          },
+          {
+            "type": "text",
+            "name": "family_name"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "query1",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "diary",
+                "column": "diary_date"
+              },
+              {
+                "table": "diary",
+                "column": "title"
+              },
+              {
+                "table": "diary",
+                "column": "mt_id"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.diary_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "diary"
+            },
+            "primary": "diary_id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "diary.diary_id",
+                  "field": "diary.diary_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.diary_id}}",
+                  "data": {
+                    "table": "diary",
+                    "column": "diary_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "diary_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `diary_date`, `title`, `mt_id` from `diary` where `diary`.`diary_id` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "datetime",
+            "name": "diary_date"
+          },
+          {
+            "type": "text",
+            "name": "title"
+          },
+          {
+            "type": "text",
+            "name": "mt_id"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query1.mt_id==3}}",
+          "then": {
+            "steps": [
+              {
+                "name": "",
+                "options": {
+                  "comment": "reopen appointment"
+                }
+              },
+              {
+                "name": "update",
+                "module": "dbupdater",
+                "action": "update",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "update",
+                    "values": [
+                      {
+                        "table": "diary",
+                        "column": "mt_id",
+                        "type": "text",
+                        "value": "1"
+                      }
+                    ],
+                    "table": "diary",
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "diary_id",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{$_POST.diary_id}}",
+                          "data": {
+                            "column": "diary_id"
+                          },
+                          "operation": "="
+                        }
+                      ]
+                    },
+                    "returning": "diary_id",
+                    "query": "update `diary` set `mt_id` = ? where `diary_id` = ?",
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{$_POST.diary_id}}",
+                        "test": ""
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "delete",
+        "module": "dbupdater",
+        "action": "delete",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "delete",
+            "table": "diary_attedees",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "id_user",
+                  "field": "id_user",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{current_user_identity}}",
+                  "data": {
+                    "column": "id_user"
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "diary_id",
+                  "field": "diary_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.diary_id}}",
+                  "data": {
+                    "column": "diary_id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "attend_id",
+            "query": "delete from `diary_attedees` where `id_user` = ? and `diary_id` = ?",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{current_user_identity}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_POST.diary_id}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "",
+        "options": {
+          "comment": "email admin\n"
+        }
+      },
+      {
+        "name": "",
+        "module": "mail",
+        "action": "send",
+        "options": {
+          "instance": "smtp",
+          "subject": "A subscriber juts unsubscribed",
+          "fromName": "MyCybertherapy",
+          "fromEmail": "{{$_ENV.adminsender}}",
+          "toName": "{{$_ENV.consultant}}",
+          "toEmail": "{{$_ENV.adminemail}}",
+          "contentType": "html",
+          "body": "<p>{{query.first_name}} {{query.family_name}} ({{query.email}}) just unsubscribed from meeting {{query1.title}} at {{query1.diary_date.formatDate('HH:mm', false)}} on {{query1.diary_date.formatDate('dd/MM/yyyy', false)}}</p>\nThe event has been re-opened."
+        }
+      }
+    ]
+  }
+}

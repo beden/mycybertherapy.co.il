@@ -87,6 +87,31 @@
       "path": "/Letter",
       "page": "Letter",
       "layout": "admin"
+    },
+    {
+      "path": "/admin/today",
+      "page": "admin/today",
+      "layout": "admin"
+    },
+    {
+      "path": "/availability",
+      "page": "availability",
+      "layout": "main"
+    },
+    {
+      "path": "/mymeetings",
+      "page": "mymeetings",
+      "layout": "main"
+    },
+    {
+      "path": "/meet/:confuuid/:attuuid/:user_id",
+      "page": "meet",
+      "layout": "main"
+    },
+    {
+      "path": "/admin/adminmeet/:confuuid",
+      "page": "admin/adminmeet",
+      "layout": "admin"
     }
   ],
   "layouts": {

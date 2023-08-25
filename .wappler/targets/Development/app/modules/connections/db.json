@@ -6,7 +6,6 @@
     "client": "sqlite3",
     "connection": {
       "filename": "/db/db_dev.sqlite3"
-    },
-    "tz": "utc"
+    }
   }
 }

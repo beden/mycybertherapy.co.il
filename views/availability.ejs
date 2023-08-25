@@ -1,0 +1,78 @@
+<!-- Wappler include head-page="layouts/main" is="dmx-app" id="Availability" appConnect="local" fontawesome_5="cdn" bootstrap5="cdn" components="{dmxCalendar:{},dmxFormatter:{},dmxStateManagement:{},dmxBootstrap5Modal:{}}" -->
+<meta name="ac:route" content="/availability">
+<dmx-session-manager id="session1"></dmx-session-manager>
+<dmx-serverconnect id="conn_webinars" url="/api/admin/diary/all_webinars"></dmx-serverconnect>
+<dmx-serverconnect id="conn_consultations" url="/api/admin/diary/all_consultations"></dmx-serverconnect>
+<dmx-serverconnect id="conn_booked" url="/api/admin/diary/all_booked"></dmx-serverconnect>
+<dmx-serverconnect id="conn_meetingtypes" url="/api/admin/diary/get_meeting_types"></dmx-serverconnect>
+<dmx-serverconnect id="conn_entry_by_id" url="/api/admin/diary/get_diary_event_by_id" noload="true"></dmx-serverconnect>
+<div class="modal" id="modal-warning" is="dmx-bs5-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="text-center text-warning"><i class="fas fa-exclamation-circle fa-6x"></i></p>
+                <h4 class="text-center fw-light">Consultation Already Booked</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modalsubscribed" is="dmx-bs5-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="text-center text-warning"><i class="fas fa-exclamation-circle fa-6x"></i></p>
+                <h4 class="text-center fw-light">{{modaladd.form_register.lastError.response}}</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modaladd" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-light">
+                <h5 class="modal-title">Subscribe to Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p dmx-text="conn_entry_by_id.data.query.title+'@'+conn_entry_by_id.data.query.diary_date.formatDate('HH:mm')+' '+conn_entry_by_id.data.query.diary_date.formatDate('dd/MM/yyyy')">Modal body text goes here.</p>
+                <form id="form_register" is="dmx-serverconnect-form" method="post" action="/api/register/book_in_to_meeting" dmx-on:success="notifies_global.success('Added to meeting');browser_global.goto('/availability');modaladd.hide()" dmx-on:forbidden="modaladd.hide();modalsubscribed.show()">
+                    <input id="inp_diary_id" name="diary_id" class="form-control" dmx-bind:value="conn_entry_by_id.data.query.diary_id" type="hidden">
+                    <input id="inp_mt_id" name="mt_id" class="form-control" dmx-bind:value="conn_entry_by_id.data.query.mt_id" type="hidden"><button id="btn1" class="btn w-100 btn-primary" type="submit">Subscribe</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container wappler-block pt-3 pb-3">
+    <div class="row">
+        <div class="col">
+            <p class="bg-danger text-center text-light">Booked</p>
+        </div>
+        <div class="col">
+            <p class="bg-primary text-center text-light">Webinars</p>
+        </div>
+        <div class="col">
+            <p class="bg-success text-center text-light">Consultations</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek" hide-non-current-dates="true" no-event-overlap="true" no-fixed-week-count="true" now-indicator="true" locale="he" event-order="" height="100" view="dayGridMonth" aspect-ratio="1.7" dmx-on:eventclick="run([{run:{action:`conn_entry_by_id.load({diary_id: $event.event.id})`,outputType:'text'}},{wait:{delay:150}},{condition:{if:`conn_entry_by_id.data.query.mt_id==3`,then:{steps:[{comment:{msg:'booked'}},{run:{action:`modalwarning.show()`,outputType:'text'}}]},outputType:'boolean'}},{condition:{if:`conn_entry_by_id.data.query.mt_id==2`,then:{steps:[{comment:{msg:'webinar'}},{run:{action:`modaladd.show()`,outputType:'text'}}]},outputType:'boolean'}},{condition:{if:`conn_entry_by_id.data.query.mt_id==1`,then:{steps:[{comment:{msg:'consultation'}},{condition:{if:`conn_entry_by_id.data.query.attedees.hasItems()`,then:{steps:{run:{action:`modalwarning.show()`,outputType:'text'}}},else:{steps:{run:{action:`modaladd.show()`,outputType:'text'}}},outputType:'boolean'}}]},outputType:'boolean'}}])">
+                <dmx-calendar-source id="diaryDB_consult" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" dmx-bind:events="conn_consultations.data.query" color="#198754" event-start="diary_date.toISODate()"></dmx-calendar-source>
+                <dmx-calendar-source id="diaryDB_webinar" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" event-start="diary_date.toISODate()" dmx-bind:events="conn_webinars.data.query" color="#0d6efd"></dmx-calendar-source>
+                <dmx-calendar-source id="diaryDB_booked" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" event-start="diary_date.toISODate()" dmx-bind:events="conn_booked.data.query" color="#dc3545"></dmx-calendar-source>
+            </dmx-calendar>
+        </div>
+    </div>
+
+</div>

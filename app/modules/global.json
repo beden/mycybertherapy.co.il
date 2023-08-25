@@ -6,6 +6,16 @@
         "name": "regcode"
       }
     ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "URL"
+      },
+      {
+        "type": "text",
+        "name": "URI"
+      }
+    ],
     "$_ENV": [
       {
         "type": "text",
@@ -35,6 +45,48 @@
   },
   "exec": {
     "steps": [
+      {
+        "name": "one",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": 1
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "zero",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": 0
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "logicTrue",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{one==one}}"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "text"
+      },
+      {
+        "name": "logicFalse",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{zero==one}}"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "text"
+      },
       {
         "name": "current_user_identity",
         "module": "auth",
@@ -142,6 +194,287 @@
           }
         ],
         "outputType": "object"
+      },
+      {
+        "name": "xurl",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "key": "gurl",
+          "value": "{{$_SERVER.URL}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "splitten",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{xurl.split('/')}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{splitten[1]=='api'||splitten[1]=='admin'}}",
+          "then": {
+            "steps": {
+              "name": "",
+              "options": {
+                "comment": "ignore as system url"
+              }
+            }
+          },
+          "else": {
+            "steps": [
+              {
+                "name": "query_seo",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "select",
+                    "columns": [
+                      {
+                        "table": "seo",
+                        "column": "*"
+                      }
+                    ],
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{xurl}}",
+                        "test": ""
+                      }
+                    ],
+                    "table": {
+                      "name": "seo"
+                    },
+                    "primary": "seo_id",
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "seo.page",
+                          "field": "seo.page",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{xurl}}",
+                          "data": {
+                            "table": "seo",
+                            "column": "page",
+                            "type": "text",
+                            "columnObj": {
+                              "type": "string",
+                              "maxLength": 255,
+                              "primary": false,
+                              "unique": false,
+                              "nullable": true,
+                              "name": "page"
+                            }
+                          },
+                          "operation": "=",
+                          "table": "seo"
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "select * from `seo` where `seo`.`page` = ?"
+                  }
+                },
+                "meta": [
+                  {
+                    "type": "number",
+                    "name": "seo_id"
+                  },
+                  {
+                    "type": "text",
+                    "name": "title"
+                  },
+                  {
+                    "type": "text",
+                    "name": "description"
+                  },
+                  {
+                    "type": "text",
+                    "name": "page"
+                  },
+                  {
+                    "type": "text",
+                    "name": "head"
+                  }
+                ],
+                "outputType": "object"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{!query_seo}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "insert",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "seo",
+                                "column": "title",
+                                "type": "text",
+                                "value": "MyCybertherapy"
+                              },
+                              {
+                                "table": "seo",
+                                "column": "description",
+                                "type": "text",
+                                "value": "MyCybertherapy"
+                              },
+                              {
+                                "table": "seo",
+                                "column": "page",
+                                "type": "text",
+                                "value": "{{xurl}}"
+                              },
+                              {
+                                "table": "seo",
+                                "column": "head",
+                                "type": "text",
+                                "value": "MyCybertherapy By Dr Benjamin"
+                              }
+                            ],
+                            "table": "seo",
+                            "returning": "seo_id",
+                            "query": "insert into `seo` (`description`, `head`, `page`, `title`) values (?, ?, ?, ?) returning `seo_id`",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{xurl}}",
+                                "test": ""
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "query_seo",
+                        "module": "dbconnector",
+                        "action": "single",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "select",
+                            "columns": [
+                              {
+                                "table": "seo",
+                                "column": "*"
+                              }
+                            ],
+                            "params": [
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P1",
+                                "value": "{{xurl}}",
+                                "test": ""
+                              }
+                            ],
+                            "table": {
+                              "name": "seo"
+                            },
+                            "primary": "seo_id",
+                            "joins": [],
+                            "wheres": {
+                              "condition": "AND",
+                              "rules": [
+                                {
+                                  "id": "seo.page",
+                                  "field": "seo.page",
+                                  "type": "string",
+                                  "operator": "equal",
+                                  "value": "{{xurl}}",
+                                  "data": {
+                                    "table": "seo",
+                                    "column": "page",
+                                    "type": "text",
+                                    "columnObj": {
+                                      "type": "string",
+                                      "maxLength": 255,
+                                      "primary": false,
+                                      "unique": false,
+                                      "nullable": true,
+                                      "name": "page"
+                                    }
+                                  },
+                                  "operation": "=",
+                                  "table": "seo"
+                                }
+                              ],
+                              "conditional": null,
+                              "valid": true
+                            },
+                            "query": "select * from `seo` where `seo`.`page` = ?"
+                          }
+                        },
+                        "meta": [
+                          {
+                            "type": "number",
+                            "name": "seo_id"
+                          },
+                          {
+                            "type": "text",
+                            "name": "title"
+                          },
+                          {
+                            "type": "text",
+                            "name": "description"
+                          },
+                          {
+                            "type": "text",
+                            "name": "page"
+                          },
+                          {
+                            "type": "text",
+                            "name": "head"
+                          }
+                        ],
+                        "outputType": "object"
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean"
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
       }
     ]
   }

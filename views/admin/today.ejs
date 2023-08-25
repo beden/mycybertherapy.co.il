@@ -1,0 +1,55 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="meetingdiary" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxBootstrap5Alert:{},dmxStateManagement:{},dmxDatePicker:{},dmxFormatter:{},dmxBootbox5:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5Tooltips:{},dmxBootstrap5Popovers:{},dmxAutocomplete:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
+<div class="modal" id="modal_open_meeting" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-light bg-primary">
+                <h5 class="modal-title">Open a Meeting</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <a class="btn w-100 btn-success" dmx-bind:href="'/admin/adminmeet/'+conn_entry_by_id.data.query.confuuid">Open Meeting</a>
+                <button id="btn1" class="btn">Button</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<dmx-session-manager id="session1"></dmx-session-manager>
+<dmx-serverconnect id="conn_webinars" url="/api/admin/diary/all_webinars"></dmx-serverconnect>
+<dmx-serverconnect id="conn_consultations" url="/api/admin/diary/all_consultations"></dmx-serverconnect>
+<dmx-serverconnect id="conn_booked" url="/api/admin/diary/all_booked"></dmx-serverconnect>
+<dmx-serverconnect id="conn_meetingtypes" url="/api/admin/diary/get_meeting_types"></dmx-serverconnect>
+<dmx-serverconnect id="conn_entry_by_id" url="/api/admin/diary/get_diary_event_by_id" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="conn_users" url="/api/admin/users/all_users" dmx-param:filter="modaledit.inp_filter.value"></dmx-serverconnect>
+
+<meta name="ac:route" content="/admin/today">
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center text-primary fw-lighter">לקבוע מפגש</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="bg-danger text-center text-light">Booked</p>
+        </div>
+        <div class="col">
+            <p class="bg-primary text-center text-light">Webinars</p>
+        </div>
+        <div class="col">
+            <p class="bg-success text-center text-light">Consultations</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek,dayGridDay" hide-non-current-dates="true" no-event-overlap="true" no-fixed-week-count="true" now-indicator="true" locale="he" dmx-on:eventclick="conn_entry_by_id.load({diary_id: $event.event.id});modal_open_meeting.show()" event-order="" height="100" view="dayGridDay" aspect-ratio="1.7">
+                <dmx-calendar-source id="diaryDB_consult" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" dmx-bind:events="conn_consultations.data.query" color="#198754" event-start="diary_date.toISODate()"></dmx-calendar-source>
+                <dmx-calendar-source id="diaryDB_webinar" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" event-start="diary_date.toISODate()" dmx-bind:events="conn_webinars.data.query" color="#0d6efd"></dmx-calendar-source>
+                <dmx-calendar-source id="diaryDB_booked" event-title="diary_date.formatDate('HH:mm')+' '+(mt_id == 3 ? 'Booked' : title)" event-id="diary_id" event-start="diary_date.toISODate()" dmx-bind:events="conn_booked.data.query" color="#dc3545"></dmx-calendar-source>
+            </dmx-calendar>
+        </div>
+    </div>
+
+</div>

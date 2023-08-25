@@ -238,6 +238,15 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "confuuid": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         },
         "sub": {
@@ -285,6 +294,15 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "token": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         },
         "parent": "conference"
@@ -320,6 +338,15 @@
               "referenceType": "integer",
               "onUpdate": "CASCADE",
               "onDelete": "CASCADE"
+            }
+          },
+          "attuuid": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
             }
           }
         },
@@ -392,18 +419,58 @@
               "unique": false,
               "nullable": true
             }
-          },
-          "diary_time": {
+          }
+        },
+        "sub": {
+          "diary_attedees": "diary_id"
+        }
+      },
+      "seo": {
+        "db": {},
+        "columns": {
+          "seo_id": {
             "db": {
-              "type": "time",
+              "type": "increments",
+              "primary": true,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "description": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "page": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "head": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
               "primary": false,
               "unique": false,
               "nullable": true
             }
           }
-        },
-        "sub": {
-          "diary_attedees": "diary_id"
         }
       }
     },
