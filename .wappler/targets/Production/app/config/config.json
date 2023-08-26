@@ -8,6 +8,7 @@
     "timeoffset": "2",
     "adminemail": "admin@mycybertherapy.co.il",
     "adminsender": "noreply@mycybertherapy.co.il",
-    "consultant": "Dr Michael Benjamin"
+    "consultant": "Dr Michael Benjamin",
+    "confURL": "https://app.dyte.io/v2/meeting"
   }
 }

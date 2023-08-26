@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="meetingdiary" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxBootstrap5Alert:{},dmxStateManagement:{},dmxDatePicker:{},dmxFormatter:{},dmxBootbox5:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5Tooltips:{},dmxBootstrap5Popovers:{},dmxAutocomplete:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="meetingdiary" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxBootstrap5Alert:{},dmxStateManagement:{},dmxDatePicker:{},dmxFormatter:{},dmxBootbox5:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5Tooltips:{},dmxBootstrap5Popovers:{},dmxAutocomplete:{},dmxPreloader:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
 <div class="modal" id="modal_open_meeting" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -8,7 +8,6 @@
             </div>
             <div class="modal-body">
                 <a class="btn w-100 btn-success" dmx-bind:href="'/admin/adminmeet/'+conn_entry_by_id.data.query.confuuid">Open Meeting</a>
-                <button id="btn1" class="btn">Button</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

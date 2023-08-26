@@ -240,7 +240,7 @@
         "outputType": "object"
       },
       {
-        "name": "query1",
+        "name": "query_opened",
         "module": "dbconnector",
         "action": "single",
         "options": {
@@ -251,6 +251,10 @@
               {
                 "table": "conference",
                 "column": "conference_id"
+              },
+              {
+                "table": "conference",
+                "column": "meeting_id"
               }
             ],
             "params": [
@@ -295,7 +299,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "select `conference_id` from `conference` where `conference`.`confuuid` = ?"
+            "query": "select `conference_id`, `meeting_id` from `conference` where `conference`.`confuuid` = ?"
           }
         },
         "output": true,
@@ -303,9 +307,133 @@
           {
             "type": "number",
             "name": "conference_id"
+          },
+          {
+            "type": "text",
+            "name": "meeting_id"
           }
         ],
         "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query_opened}}",
+          "then": {
+            "steps": [
+              {
+                "name": "",
+                "options": {
+                  "comment": "get login\n"
+                }
+              },
+              {
+                "name": "query_token",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "select",
+                    "columns": [
+                      {
+                        "table": "conference_participants",
+                        "column": "token"
+                      }
+                    ],
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{current_user_identity}}",
+                        "test": ""
+                      }
+                    ],
+                    "table": {
+                      "name": "conference_participants"
+                    },
+                    "primary": "p_id",
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "conference_participants.user_id",
+                          "field": "conference_participants.user_id",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{current_user_identity}}",
+                          "data": {
+                            "table": "conference_participants",
+                            "column": "user_id",
+                            "type": "text",
+                            "columnObj": {
+                              "type": "string",
+                              "maxLength": 255,
+                              "primary": false,
+                              "unique": false,
+                              "nullable": true,
+                              "name": "user_id"
+                            }
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "select `token` from `conference_participants` where `conference_participants`.`user_id` = ?"
+                  }
+                },
+                "output": true,
+                "meta": [
+                  {
+                    "type": "text",
+                    "name": "token"
+                  }
+                ],
+                "outputType": "object"
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "ret_url",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_ENV.confURL}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "ret_id",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query_opened.meeting_id}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "ret_token",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query_token.token}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
       }
     ]
   }

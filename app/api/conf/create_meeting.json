@@ -5,10 +5,50 @@
         "type": "text",
         "name": "confuuid"
       }
+    ],
+    "$_POST": [
+      {
+        "type": "array",
+        "name": "record",
+        "sub": [
+          {
+            "type": "text",
+            "name": "id_user"
+          },
+          {
+            "type": "text",
+            "name": "api1_attendees"
+          },
+          {
+            "type": "number",
+            "name": "insert_conference_data"
+          }
+        ]
+      }
     ]
   },
   "exec": {
     "steps": [
+      {
+        "name": "l_id",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "key": "g_id"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "l_token",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "key": "g_token"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
       {
         "name": "query_get_diary_entry",
         "module": "dbconnector",
@@ -69,7 +109,7 @@
                   {
                     "table": "users",
                     "column": "*",
-                    "type": "LEFT",
+                    "type": "INNER",
                     "clauses": {
                       "condition": "AND",
                       "rules": []
@@ -77,7 +117,7 @@
                     "primary": "id_users"
                   }
                 ],
-                "query": "select `attedees`.`id_user`, `users`.`email`, `users`.`first_name`, `users`.`family_name` from `diary_attedees` as `attedees` left join `users`"
+                "query": "select `attedees`.`id_user`, `users`.`email`, `users`.`first_name`, `users`.`family_name` from `diary_attedees` as `attedees` inner join `users`"
               }
             },
             "wheres": {
@@ -102,7 +142,8 @@
                       "name": "confuuid"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "diary"
                 }
               ],
               "conditional": null,
@@ -159,365 +200,133 @@
         "outputType": "object"
       },
       {
-        "name": "api",
-        "module": "api",
-        "action": "send",
+        "name": "query_check_conference_live",
+        "module": "dbconnector",
+        "action": "single",
         "options": {
-          "url": "{{$_ENV.BaseURL+'/meetings'}}",
-          "method": "POST",
-          "auth": "username",
-          "username": "{{$_ENV.OrganizationID}}",
-          "password": "{{$_ENV.APIKey}}",
-          "data": {
-            "title": "{{query_get_diary_entry.title.default('default meeting')}}",
-            "preferred_region": "eu-central-1"
-          },
-          "schema": [
-            {
-              "type": "object",
-              "name": "data",
-              "sub": [
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "conference",
+                "column": "conference_id"
+              },
+              {
+                "table": "conference",
+                "column": "meeting_id"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.confuuid}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "conference"
+            },
+            "primary": "conference_id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
                 {
-                  "type": "boolean",
-                  "name": "success"
-                },
-                {
-                  "type": "object",
-                  "name": "data",
-                  "sub": [
-                    {
-                      "type": "text",
-                      "name": "id"
-                    },
-                    {
-                      "type": "text",
-                      "name": "title"
-                    },
-                    {
-                      "type": "text",
-                      "name": "preferred_region"
-                    },
-                    {
-                      "type": "text",
-                      "name": "created_at"
-                    },
-                    {
-                      "type": "boolean",
-                      "name": "record_on_start"
-                    },
-                    {
-                      "type": "text",
-                      "name": "updated_at"
-                    },
-                    {
-                      "type": "boolean",
-                      "name": "live_stream_on_start"
-                    },
-                    {
-                      "type": "text",
-                      "name": "status"
-                    },
-                    {
-                      "type": "object",
-                      "name": "recording_config",
-                      "sub": [
-                        {
-                          "type": "number",
-                          "name": "max_seconds"
-                        },
-                        {
-                          "type": "text",
-                          "name": "file_name_prefix"
-                        },
-                        {
-                          "type": "object",
-                          "name": "video_config",
-                          "sub": [
-                            {
-                              "type": "text",
-                              "name": "codec"
-                            },
-                            {
-                              "type": "number",
-                              "name": "width"
-                            },
-                            {
-                              "type": "number",
-                              "name": "height"
-                            },
-                            {
-                              "type": "object",
-                              "name": "watermark",
-                              "sub": [
-                                {
-                                  "type": "text",
-                                  "name": "url"
-                                },
-                                {
-                                  "type": "object",
-                                  "name": "size",
-                                  "sub": [
-                                    {
-                                      "type": "number",
-                                      "name": "width"
-                                    },
-                                    {
-                                      "type": "text",
-                                      "name": "height"
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": "text",
-                                  "name": "position"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "text",
-                              "name": "segment_length"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "object",
-                          "name": "audio_config",
-                          "sub": [
-                            {
-                              "type": "text",
-                              "name": "codec"
-                            },
-                            {
-                              "type": "text",
-                              "name": "channel"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "object",
-                          "name": "storage_config",
-                          "sub": [
-                            {
-                              "type": "text",
-                              "name": "type"
-                            },
-                            {
-                              "type": "text",
-                              "name": "secret"
-                            },
-                            {
-                              "type": "text",
-                              "name": "bucket"
-                            },
-                            {
-                              "type": "text",
-                              "name": "region"
-                            },
-                            {
-                              "type": "text",
-                              "name": "path"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "object",
-                          "name": "dyte_bucket_config",
-                          "sub": [
-                            {
-                              "type": "boolean",
-                              "name": "enabled"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "object",
-                          "name": "live_streaming_config",
-                          "sub": [
-                            {
-                              "type": "text",
-                              "name": "rtmp_url"
-                            }
-                          ]
-                        }
-                      ]
+                  "id": "conference.confuuid",
+                  "field": "conference.confuuid",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.confuuid}}",
+                  "data": {
+                    "table": "conference",
+                    "column": "confuuid",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": 255,
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "confuuid"
                     }
-                  ]
+                  },
+                  "operation": "="
                 }
-              ]
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `conference_id`, `meeting_id` from `conference` where `conference`.`confuuid` = ?",
+            "sub": {
+              "participants": {
+                "type": "select",
+                "table": {
+                  "name": "conference_participants",
+                  "alias": "participants"
+                },
+                "key": "conference_id",
+                "columns": [
+                  {
+                    "table": "participants",
+                    "column": "token"
+                  }
+                ],
+                "params": [],
+                "primary": "p_id",
+                "joins": [],
+                "wheres": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "id": "participants.ishost",
+                      "field": "participants.ishost",
+                      "type": "boolean",
+                      "operator": "equal",
+                      "value": true,
+                      "data": {
+                        "table": "participants",
+                        "column": "ishost",
+                        "type": "boolean",
+                        "columnObj": {
+                          "type": "boolean",
+                          "default": "0",
+                          "primary": false,
+                          "unique": false,
+                          "nullable": true,
+                          "name": "ishost"
+                        }
+                      },
+                      "operation": "="
+                    }
+                  ],
+                  "conditional": null,
+                  "valid": true
+                },
+                "query": "select `token` from `conference_participants` as `participants` where `participants`.`ishost` = ?"
+              }
             }
-          ]
+          }
         },
         "output": true,
         "meta": [
           {
-            "type": "object",
-            "name": "data",
+            "type": "number",
+            "name": "conference_id"
+          },
+          {
+            "type": "text",
+            "name": "meeting_id"
+          },
+          {
+            "name": "participants",
+            "type": "array",
             "sub": [
               {
-                "type": "boolean",
-                "name": "success"
-              },
-              {
-                "type": "object",
-                "name": "data",
-                "sub": [
-                  {
-                    "type": "text",
-                    "name": "id"
-                  },
-                  {
-                    "type": "text",
-                    "name": "title"
-                  },
-                  {
-                    "type": "text",
-                    "name": "preferred_region"
-                  },
-                  {
-                    "type": "text",
-                    "name": "created_at"
-                  },
-                  {
-                    "type": "boolean",
-                    "name": "record_on_start"
-                  },
-                  {
-                    "type": "text",
-                    "name": "updated_at"
-                  },
-                  {
-                    "type": "boolean",
-                    "name": "live_stream_on_start"
-                  },
-                  {
-                    "type": "text",
-                    "name": "status"
-                  },
-                  {
-                    "type": "object",
-                    "name": "recording_config",
-                    "sub": [
-                      {
-                        "type": "number",
-                        "name": "max_seconds"
-                      },
-                      {
-                        "type": "text",
-                        "name": "file_name_prefix"
-                      },
-                      {
-                        "type": "object",
-                        "name": "video_config",
-                        "sub": [
-                          {
-                            "type": "text",
-                            "name": "codec"
-                          },
-                          {
-                            "type": "number",
-                            "name": "width"
-                          },
-                          {
-                            "type": "number",
-                            "name": "height"
-                          },
-                          {
-                            "type": "object",
-                            "name": "watermark",
-                            "sub": [
-                              {
-                                "type": "text",
-                                "name": "url"
-                              },
-                              {
-                                "type": "object",
-                                "name": "size",
-                                "sub": [
-                                  {
-                                    "type": "number",
-                                    "name": "width"
-                                  },
-                                  {
-                                    "type": "text",
-                                    "name": "height"
-                                  }
-                                ]
-                              },
-                              {
-                                "type": "text",
-                                "name": "position"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "text",
-                            "name": "segment_length"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "name": "audio_config",
-                        "sub": [
-                          {
-                            "type": "text",
-                            "name": "codec"
-                          },
-                          {
-                            "type": "text",
-                            "name": "channel"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "name": "storage_config",
-                        "sub": [
-                          {
-                            "type": "text",
-                            "name": "type"
-                          },
-                          {
-                            "type": "text",
-                            "name": "secret"
-                          },
-                          {
-                            "type": "text",
-                            "name": "bucket"
-                          },
-                          {
-                            "type": "text",
-                            "name": "region"
-                          },
-                          {
-                            "type": "text",
-                            "name": "path"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "name": "dyte_bucket_config",
-                        "sub": [
-                          {
-                            "type": "boolean",
-                            "name": "enabled"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "name": "live_streaming_config",
-                        "sub": [
-                          {
-                            "type": "text",
-                            "name": "rtmp_url"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                "type": "text",
+                "name": "token"
               }
             ]
           }
@@ -529,36 +338,72 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{api.data.success==true}}",
+          "if": "{{query_check_conference_live}}",
           "then": {
             "steps": [
               {
                 "name": "",
                 "options": {
-                  "comment": "add participants\n"
+                  "comment": "already live, no need to create"
                 }
               },
               {
                 "name": "",
                 "options": {
-                  "comment": "add michael\n"
+                  "comment": "Get meeting id\n"
                 }
               },
               {
-                "name": "api1",
+                "name": "l_id",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "key": "g_id",
+                  "value": "{{query_check_conference_live.meeting_id}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              },
+              {
+                "name": "",
+                "options": {
+                  "comment": "and token"
+                }
+              },
+              {
+                "name": "l_token",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "key": "g_token",
+                  "value": "{{query_check_conference_live.participants[0].token}}"
+                },
+                "meta": [],
+                "outputType": "text"
+              }
+            ]
+          },
+          "else": {
+            "steps": [
+              {
+                "name": "",
+                "options": {
+                  "comment": "create"
+                }
+              },
+              {
+                "name": "api",
                 "module": "api",
                 "action": "send",
                 "options": {
-                  "url": "{{$_ENV.BaseURL+'/meetings'+api.data.data.id+'/participants'}}",
+                  "url": "{{$_ENV.BaseURL+'/meetings'}}",
                   "method": "POST",
                   "auth": "username",
                   "username": "{{$_ENV.OrganizationID}}",
                   "password": "{{$_ENV.APIKey}}",
                   "data": {
-                    "name": "{{$_ENV.consultant}}",
-                    "picture": "https://mycybertherapy.co.il/assets/images/themainlogo1.jpg",
-                    "custom_participant_id": "{{$_ENV.adminemail}}",
-                    "preset_name": "group_call_host"
+                    "title": "{{query_get_diary_entry.title.default('default meeting')}}",
+                    "preferred_region": "eu-central-1"
                   },
                   "schema": [
                     {
@@ -579,31 +424,155 @@
                             },
                             {
                               "type": "text",
-                              "name": "name"
+                              "name": "title"
                             },
                             {
                               "type": "text",
-                              "name": "picture"
-                            },
-                            {
-                              "type": "text",
-                              "name": "custom_participant_id"
-                            },
-                            {
-                              "type": "text",
-                              "name": "preset_name"
+                              "name": "preferred_region"
                             },
                             {
                               "type": "text",
                               "name": "created_at"
                             },
                             {
+                              "type": "boolean",
+                              "name": "record_on_start"
+                            },
+                            {
                               "type": "text",
                               "name": "updated_at"
                             },
                             {
+                              "type": "boolean",
+                              "name": "live_stream_on_start"
+                            },
+                            {
                               "type": "text",
-                              "name": "token"
+                              "name": "status"
+                            },
+                            {
+                              "type": "object",
+                              "name": "recording_config",
+                              "sub": [
+                                {
+                                  "type": "number",
+                                  "name": "max_seconds"
+                                },
+                                {
+                                  "type": "text",
+                                  "name": "file_name_prefix"
+                                },
+                                {
+                                  "type": "object",
+                                  "name": "video_config",
+                                  "sub": [
+                                    {
+                                      "type": "text",
+                                      "name": "codec"
+                                    },
+                                    {
+                                      "type": "number",
+                                      "name": "width"
+                                    },
+                                    {
+                                      "type": "number",
+                                      "name": "height"
+                                    },
+                                    {
+                                      "type": "object",
+                                      "name": "watermark",
+                                      "sub": [
+                                        {
+                                          "type": "text",
+                                          "name": "url"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "name": "size",
+                                          "sub": [
+                                            {
+                                              "type": "number",
+                                              "name": "width"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "name": "height"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "text",
+                                          "name": "position"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "text",
+                                      "name": "segment_length"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "name": "audio_config",
+                                  "sub": [
+                                    {
+                                      "type": "text",
+                                      "name": "codec"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "name": "channel"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "name": "storage_config",
+                                  "sub": [
+                                    {
+                                      "type": "text",
+                                      "name": "type"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "name": "secret"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "name": "bucket"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "name": "region"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "name": "path"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "name": "dyte_bucket_config",
+                                  "sub": [
+                                    {
+                                      "type": "boolean",
+                                      "name": "enabled"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "name": "live_streaming_config",
+                                  "sub": [
+                                    {
+                                      "type": "text",
+                                      "name": "rtmp_url"
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         }
@@ -631,31 +600,155 @@
                           },
                           {
                             "type": "text",
-                            "name": "name"
+                            "name": "title"
                           },
                           {
                             "type": "text",
-                            "name": "picture"
-                          },
-                          {
-                            "type": "text",
-                            "name": "custom_participant_id"
-                          },
-                          {
-                            "type": "text",
-                            "name": "preset_name"
+                            "name": "preferred_region"
                           },
                           {
                             "type": "text",
                             "name": "created_at"
                           },
                           {
+                            "type": "boolean",
+                            "name": "record_on_start"
+                          },
+                          {
                             "type": "text",
                             "name": "updated_at"
                           },
                           {
+                            "type": "boolean",
+                            "name": "live_stream_on_start"
+                          },
+                          {
                             "type": "text",
-                            "name": "token"
+                            "name": "status"
+                          },
+                          {
+                            "type": "object",
+                            "name": "recording_config",
+                            "sub": [
+                              {
+                                "type": "number",
+                                "name": "max_seconds"
+                              },
+                              {
+                                "type": "text",
+                                "name": "file_name_prefix"
+                              },
+                              {
+                                "type": "object",
+                                "name": "video_config",
+                                "sub": [
+                                  {
+                                    "type": "text",
+                                    "name": "codec"
+                                  },
+                                  {
+                                    "type": "number",
+                                    "name": "width"
+                                  },
+                                  {
+                                    "type": "number",
+                                    "name": "height"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "name": "watermark",
+                                    "sub": [
+                                      {
+                                        "type": "text",
+                                        "name": "url"
+                                      },
+                                      {
+                                        "type": "object",
+                                        "name": "size",
+                                        "sub": [
+                                          {
+                                            "type": "number",
+                                            "name": "width"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "height"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "position"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "text",
+                                    "name": "segment_length"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "name": "audio_config",
+                                "sub": [
+                                  {
+                                    "type": "text",
+                                    "name": "codec"
+                                  },
+                                  {
+                                    "type": "text",
+                                    "name": "channel"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "name": "storage_config",
+                                "sub": [
+                                  {
+                                    "type": "text",
+                                    "name": "type"
+                                  },
+                                  {
+                                    "type": "text",
+                                    "name": "secret"
+                                  },
+                                  {
+                                    "type": "text",
+                                    "name": "bucket"
+                                  },
+                                  {
+                                    "type": "text",
+                                    "name": "region"
+                                  },
+                                  {
+                                    "type": "text",
+                                    "name": "path"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "name": "dyte_bucket_config",
+                                "sub": [
+                                  {
+                                    "type": "boolean",
+                                    "name": "enabled"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "object",
+                                "name": "live_streaming_config",
+                                "sub": [
+                                  {
+                                    "type": "text",
+                                    "name": "rtmp_url"
+                                  }
+                                ]
+                              }
+                            ]
                           }
                         ]
                       }
@@ -663,6 +756,17 @@
                   }
                 ],
                 "outputType": "object"
+              },
+              {
+                "name": "l_id",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "key": "g_id",
+                  "value": "{{api.data.data.id}}"
+                },
+                "meta": [],
+                "outputType": "text"
               },
               {
                 "name": "insert_conference_data",
@@ -677,7 +781,7 @@
                         "table": "conference",
                         "column": "meeting_id",
                         "type": "text",
-                        "value": "{{$_POST.meeting_id}}"
+                        "value": "{{api.data.data.id}}"
                       },
                       {
                         "table": "conference",
@@ -706,12 +810,12 @@
                     ],
                     "table": "conference",
                     "returning": "conference_id",
-                    "query": "insert into `conference` (`confuuid`, `meeting_id`, `meetingwhen`, `title`, `type`) values (?, ?, ?, ?, ?)",
+                    "query": "insert into `conference` (`confuuid`, `meeting_id`, `meetingwhen`, `title`, `type`) values (?, ?, ?, ?, ?) returning `conference_id`",
                     "params": [
                       {
                         "name": ":P1",
                         "type": "expression",
-                        "value": "{{$_POST.meeting_id}}",
+                        "value": "{{api.data.data.id}}",
                         "test": ""
                       },
                       {
@@ -754,35 +858,40 @@
                 "output": true
               },
               {
-                "name": "repeat",
+                "name": "",
                 "module": "core",
-                "action": "repeat",
+                "action": "condition",
                 "options": {
-                  "repeat": "{{query_get_diary_entry.attedees}}",
-                  "outputFields": [],
-                  "exec": {
+                  "if": "{{api.data.success==true}}",
+                  "then": {
                     "steps": [
                       {
                         "name": "",
                         "options": {
-                          "comment": "Add each attendee"
+                          "comment": "add participants\n"
                         }
                       },
                       {
-                        "name": "api1_attendees",
+                        "name": "",
+                        "options": {
+                          "comment": "add michael\n"
+                        }
+                      },
+                      {
+                        "name": "api1",
                         "module": "api",
                         "action": "send",
                         "options": {
-                          "url": "{{$_ENV.BaseURL+'/meetings'+api.data.data.id+'/participants'}}",
+                          "url": "{{$_ENV.BaseURL+'/meetings/'+api.data.data.id+'/participants'}}",
                           "method": "POST",
                           "auth": "username",
                           "username": "{{$_ENV.OrganizationID}}",
                           "password": "{{$_ENV.APIKey}}",
                           "data": {
-                            "name": "{{query_get_diary_entry.attedees[0].first_name+' '+query_get_diary_entry.attedees[0].family_name}}",
+                            "name": "{{$_ENV.consultant}}",
                             "picture": "https://mycybertherapy.co.il/assets/images/themainlogo1.jpg",
-                            "custom_participant_id": "{{query_get_diary_entry.attedees[0].email}}",
-                            "preset_name": "group_call_participant"
+                            "custom_participant_id": "{{$_ENV.adminemail}}",
+                            "preset_name": "group_call_host"
                           },
                           "schema": [
                             {
@@ -889,7 +998,7 @@
                         "outputType": "object"
                       },
                       {
-                        "name": "insert",
+                        "name": "insert_host",
                         "module": "dbupdater",
                         "action": "insert",
                         "options": {
@@ -901,35 +1010,41 @@
                                 "table": "conference_participants",
                                 "column": "user_id",
                                 "type": "text",
-                                "value": "{{id_user}}"
+                                "value": "{{current_user_identity}}"
                               },
                               {
                                 "table": "conference_participants",
                                 "column": "token",
                                 "type": "text",
-                                "value": "{{api1_attendees.data.data.token}}"
+                                "value": "{{api1.data.data.token}}"
                               },
                               {
                                 "table": "conference_participants",
                                 "column": "conference_id",
                                 "type": "number",
                                 "value": "{{insert_conference_data.identity}}"
+                              },
+                              {
+                                "table": "conference_participants",
+                                "column": "ishost",
+                                "type": "boolean",
+                                "value": "1"
                               }
                             ],
                             "table": "conference_participants",
                             "returning": "p_id",
-                            "query": "insert into `conference_participants` (`conference_id`, `token`, `user_id`) values (?, ?, ?) returning `p_id`",
+                            "query": "insert into `conference_participants` (`conference_id`, `ishost`, `token`, `user_id`) values (?, ?, ?, ?) returning `p_id`",
                             "params": [
                               {
                                 "name": ":P1",
                                 "type": "expression",
-                                "value": "{{id_user}}",
+                                "value": "{{current_user_identity}}",
                                 "test": ""
                               },
                               {
                                 "name": ":P2",
                                 "type": "expression",
-                                "value": "{{api1_attendees.data.data.token}}",
+                                "value": "{{api1.data.data.token}}",
                                 "test": ""
                               },
                               {
@@ -952,51 +1067,478 @@
                           }
                         ],
                         "output": true
+                      },
+                      {
+                        "name": "l_token",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "key": "g_token",
+                          "value": "{{api1.data.data.token}}"
+                        },
+                        "meta": [],
+                        "outputType": "text"
+                      },
+                      {
+                        "name": "repeat",
+                        "module": "core",
+                        "action": "repeat",
+                        "options": {
+                          "repeat": "{{query_get_diary_entry.attedees}}",
+                          "outputFields": [],
+                          "exec": {
+                            "steps": [
+                              {
+                                "name": "",
+                                "options": {
+                                  "comment": "Add each attendee"
+                                }
+                              },
+                              {
+                                "name": "api1_attendees",
+                                "module": "api",
+                                "action": "send",
+                                "options": {
+                                  "url": "{{$_ENV.BaseURL+'/meetings/'+api.data.data.id+'/participants'}}",
+                                  "method": "POST",
+                                  "auth": "username",
+                                  "username": "{{$_ENV.OrganizationID}}",
+                                  "password": "{{$_ENV.APIKey}}",
+                                  "data": {
+                                    "name": "{{query_get_diary_entry.attedees[0].first_name+' '+query_get_diary_entry.attedees[0].family_name}}",
+                                    "picture": "https://mycybertherapy.co.il/assets/images/themainlogo1.jpg",
+                                    "custom_participant_id": "{{query_get_diary_entry.attedees[0].email}}",
+                                    "preset_name": "group_call_participant"
+                                  },
+                                  "schema": [
+                                    {
+                                      "type": "object",
+                                      "name": "data",
+                                      "sub": [
+                                        {
+                                          "type": "boolean",
+                                          "name": "success"
+                                        },
+                                        {
+                                          "type": "object",
+                                          "name": "data",
+                                          "sub": [
+                                            {
+                                              "type": "text",
+                                              "name": "id"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "name": "name"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "name": "picture"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "name": "custom_participant_id"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "name": "preset_name"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "name": "created_at"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "name": "updated_at"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "name": "token"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "output": true,
+                                "meta": [
+                                  {
+                                    "type": "object",
+                                    "name": "data",
+                                    "sub": [
+                                      {
+                                        "type": "boolean",
+                                        "name": "success"
+                                      },
+                                      {
+                                        "type": "object",
+                                        "name": "data",
+                                        "sub": [
+                                          {
+                                            "type": "text",
+                                            "name": "id"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "name"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "picture"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "custom_participant_id"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "preset_name"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "created_at"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "updated_at"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "name": "token"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "outputType": "object"
+                              },
+                              {
+                                "name": "insert",
+                                "module": "dbupdater",
+                                "action": "insert",
+                                "options": {
+                                  "connection": "db",
+                                  "sql": {
+                                    "type": "insert",
+                                    "values": [
+                                      {
+                                        "table": "conference_participants",
+                                        "column": "user_id",
+                                        "type": "text",
+                                        "value": "{{id_user}}"
+                                      },
+                                      {
+                                        "table": "conference_participants",
+                                        "column": "token",
+                                        "type": "text",
+                                        "value": "{{api1_attendees.data.data.token}}"
+                                      },
+                                      {
+                                        "table": "conference_participants",
+                                        "column": "conference_id",
+                                        "type": "number",
+                                        "value": "{{insert_conference_data.identity}}"
+                                      },
+                                      {
+                                        "table": "conference_participants",
+                                        "column": "ishost",
+                                        "type": "boolean",
+                                        "value": "0"
+                                      }
+                                    ],
+                                    "table": "conference_participants",
+                                    "returning": "p_id",
+                                    "query": "insert into `conference_participants` (`conference_id`, `ishost`, `token`, `user_id`) values (?, ?, ?, ?) returning `p_id`",
+                                    "params": [
+                                      {
+                                        "name": ":P1",
+                                        "type": "expression",
+                                        "value": "{{id_user}}",
+                                        "test": ""
+                                      },
+                                      {
+                                        "name": ":P2",
+                                        "type": "expression",
+                                        "value": "{{api1_attendees.data.data.token}}",
+                                        "test": ""
+                                      },
+                                      {
+                                        "name": ":P3",
+                                        "type": "expression",
+                                        "value": "{{insert_conference_data.identity}}",
+                                        "test": ""
+                                      }
+                                    ]
+                                  }
+                                },
+                                "meta": [
+                                  {
+                                    "name": "identity",
+                                    "type": "text"
+                                  },
+                                  {
+                                    "name": "affected",
+                                    "type": "number"
+                                  }
+                                ],
+                                "output": true
+                              },
+                              {
+                                "name": "f",
+                                "module": "core",
+                                "action": "setvalue",
+                                "options": {
+                                  "value": "\n",
+                                  "key": "cc_list"
+                                },
+                                "meta": [],
+                                "outputType": "text"
+                              }
+                            ]
+                          }
+                        },
+                        "output": true,
+                        "meta": [
+                          {
+                            "name": "$index",
+                            "type": "number"
+                          },
+                          {
+                            "name": "$number",
+                            "type": "number"
+                          },
+                          {
+                            "name": "$name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "$value",
+                            "type": "object"
+                          },
+                          {
+                            "name": "id_user",
+                            "type": "text"
+                          },
+                          {
+                            "name": "email",
+                            "type": "text"
+                          },
+                          {
+                            "name": "first_name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "family_name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "api1_attendees",
+                            "type": "object",
+                            "sub": [
+                              {
+                                "type": "object",
+                                "name": "data",
+                                "sub": [
+                                  {
+                                    "type": "boolean",
+                                    "name": "success"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "name": "data",
+                                    "sub": [
+                                      {
+                                        "type": "text",
+                                        "name": "id"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "name"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "picture"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "custom_participant_id"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "preset_name"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "created_at"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "updated_at"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "name": "token"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "insert",
+                            "type": "text",
+                            "sub": [
+                              {
+                                "name": "identity",
+                                "type": "text"
+                              },
+                              {
+                                "name": "affected",
+                                "type": "number"
+                              }
+                            ]
+                          }
+                        ],
+                        "outputType": "array"
+                      },
+                      {
+                        "name": "repeat1",
+                        "module": "core",
+                        "action": "repeat",
+                        "options": {
+                          "repeat": "{{query_get_diary_entry.attedees}}",
+                          "outputFields": [],
+                          "exec": {
+                            "steps": [
+                              {
+                                "name": "",
+                                "options": {
+                                  "comment": "build email list\n"
+                                }
+                              },
+                              {
+                                "name": "f",
+                                "module": "core",
+                                "action": "setvalue",
+                                "options": {
+                                  "key": "cc_list",
+                                  "value": "{{cc_list+email+';'}}"
+                                },
+                                "meta": [],
+                                "outputType": "text"
+                              },
+                              {
+                                "name": "f",
+                                "module": "core",
+                                "action": "setvalue",
+                                "options": {
+                                  "key": "cc_list",
+                                  "value": "{{cc_list+$_ENV.adminemail}}"
+                                },
+                                "meta": [],
+                                "outputType": "text"
+                              }
+                            ]
+                          }
+                        },
+                        "output": true,
+                        "meta": [
+                          {
+                            "name": "$index",
+                            "type": "number"
+                          },
+                          {
+                            "name": "$number",
+                            "type": "number"
+                          },
+                          {
+                            "name": "$name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "$value",
+                            "type": "object"
+                          },
+                          {
+                            "name": "id_user",
+                            "type": "text"
+                          },
+                          {
+                            "name": "email",
+                            "type": "text"
+                          },
+                          {
+                            "name": "first_name",
+                            "type": "text"
+                          },
+                          {
+                            "name": "family_name",
+                            "type": "text"
+                          }
+                        ],
+                        "outputType": "array"
+                      },
+                      {
+                        "name": "",
+                        "module": "mail",
+                        "action": "send",
+                        "options": {
+                          "instance": "smtp",
+                          "subject": "Meeting Started",
+                          "fromName": "MyCybertherapy",
+                          "fromEmail": "{{$_ENV.adminsender}}",
+                          "toName": "Ateendee",
+                          "recipientType": "extended",
+                          "bcc": "{{cc_list}}",
+                          "body": "Meeting Started, please log into site and join from My Meetings",
+                          "toEmail": "{{$_ENV.adminemail}}"
+                        }
                       }
                     ]
                   }
                 },
-                "output": true,
-                "meta": [
-                  {
-                    "name": "$index",
-                    "type": "number"
-                  },
-                  {
-                    "name": "$number",
-                    "type": "number"
-                  },
-                  {
-                    "name": "$name",
-                    "type": "text"
-                  },
-                  {
-                    "name": "$value",
-                    "type": "object"
-                  },
-                  {
-                    "name": "id_user",
-                    "type": "text"
-                  },
-                  {
-                    "name": "email",
-                    "type": "text"
-                  },
-                  {
-                    "name": "first_name",
-                    "type": "text"
-                  },
-                  {
-                    "name": "family_name",
-                    "type": "text"
-                  }
-                ],
-                "outputType": "array"
+                "outputType": "boolean"
               }
             ]
           }
         },
         "outputType": "boolean"
+      },
+      {
+        "name": "ret_id",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{g_id}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "ret_token",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{g_token}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "ret_url",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_ENV.confURL}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
       }
     ]
   }

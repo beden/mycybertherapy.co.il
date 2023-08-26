@@ -1,0 +1,48 @@
+[
+  {
+    "name": "MyAass",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "nf$TH39cyber"
+    },
+    "meta": [],
+    "outputType": "text"
+  },
+  {
+    "name": "update",
+    "module": "dbupdater",
+    "action": "update",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "update",
+        "values": [
+          {
+            "table": "users",
+            "column": "password",
+            "type": "text",
+            "value": "{{MyAass.sha256('sdfgsdfgsdfgsdfg567567')}}"
+          }
+        ],
+        "table": "users",
+        "returning": "id_users",
+        "query": "update `users` set `password` = ? returning `id_users`",
+        "params": [
+          {
+            "name": ":P1",
+            "type": "expression",
+            "value": "{{MyAass.sha256('sdfgsdfgsdfgsdfg567567')}}",
+            "test": ""
+          }
+        ]
+      }
+    },
+    "meta": [
+      {
+        "name": "affected",
+        "type": "number"
+      }
+    ]
+  }
+]

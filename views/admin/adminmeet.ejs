@@ -1,2 +1,5 @@
-<!-- Wappler include head-page="layouts/admin" -->
-<!-- New Wappler Page -->
+<!-- Wappler include head-page="layouts/admin" is="dmx-app" id="adminmeet" appConnect="local" fontawesome_5="cdn" bootstrap5="cdn" components="{dmxPreloader:{}}" -->
+<dmx-preloader id="preloader1"></dmx-preloader>
+<dmx-value id="varURL"></dmx-value>
+<meta name="ac:route" content="/admin/adminmeet/:confuuid">
+<dmx-serverconnect id="conn_openmeet" url="/api/conf/create_meeting" dmx-param:confuuid="query.confuuid" dmx-on:success="varURL.setValue(conn_openmeet.data.ret_url+'?id='+conn_openmeet.data.ret_id+'&amp;authToken='+conn_openmeet.data.ret_token);browser_global.goto(varURL.value)"></dmx-serverconnect>

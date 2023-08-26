@@ -1,6 +1,7 @@
 <!-- Wappler include head-page="layouts/main" is="dmx-app" id="meet" appConnect="local" fontawesome_5="cdn" bootstrap5="cdn" components="{dmxBootstrap5Modal:{},dmxFormatter:{}}" -->
+<dmx-value id="varURL"></dmx-value>
 
-<dmx-serverconnect id="conn_meeting" url="/api/register/validate_meeting" dmx-param:attuuid="query.attuuid" dmx-param:confuuid="query.confuuid" dmx-param:user_id="query.user_id"></dmx-serverconnect>
+<dmx-serverconnect id="conn_meeting" url="/api/register/validate_meeting" dmx-param:attuuid="query.attuuid" dmx-param:confuuid="query.confuuid" dmx-param:user_id="query.user_id" dmx-on:success="varURL.setValue(conn_meeting.data.ret_url+'?id='+conn_meeting.data.ret_id+'&amp;authToken='+conn_meeting.data.ret_token)"></dmx-serverconnect>
 
 
 
@@ -21,7 +22,7 @@
 </div>
 
 <meta name="ac:route" content="/meet/:confuuid/:attuuid/:user_id">
-<div id="conditional_valid" is="dmx-if" dmx-bind:condition="conn_meeting.data.query&amp;&amp;conn_meeting.data.query1">
+<div id="conditional_valid" is="dmx-if" dmx-bind:condition="!conn_meeting.data.query_token.isEmpty()">
     <div class="container">
         <div class="row">
             <div class="col">
@@ -30,13 +31,15 @@
         </div>
         <div class="row">
             <div class="col">
-                <p dmx-text="conn_meeting.data.query.title">Meeting</p>
+                <a href="#" class="btn btn-success w-100" dmx-bind:href="varURL.value">Join Meeting</a>
+                <p dmx-bind:title="conn_meeting.data.query_opened.meeting_id">A nice paragraph</p>
+                <p dmx-text="conn_meeting.data.query_token.token">A nice paragraph</p>
             </div>
         </div>
     </div>
 
 </div>
-<div id="conditional_notopen" is="dmx-if" dmx-bind:condition="conn_meeting.data.query1.isEmpty()&amp;&amp;!conn_meeting.data.query.isEmpty()">
+<div id="conditional_notopen" is="dmx-if" dmx-bind:condition="conn_meeting.data.query_token.isEmpty()">
     <div class="modal" id="modalnotopen" is="dmx-bs5-modal" tabindex="-1" role="dialog" show="true" nobackdrop="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

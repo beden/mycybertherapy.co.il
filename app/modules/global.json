@@ -40,6 +40,10 @@
       {
         "type": "text",
         "name": "consultant"
+      },
+      {
+        "type": "text",
+        "name": "confURL"
       }
     ]
   },

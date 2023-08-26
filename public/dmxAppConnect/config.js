@@ -4,6 +4,10 @@ dmx.config({
       {
         "type": "text",
         "name": "user_id"
+      },
+      {
+        "type": "text",
+        "name": "confuuid"
       }
     ],
     "cookies": [
